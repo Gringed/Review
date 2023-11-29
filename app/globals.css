@@ -1,27 +1,217 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@keyframes move {
+  100% {
+    transform: translate3d(0, 0, 1px) rotate(360deg);
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.background {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+
+.background span {
+  width: 20vmin;
+  height: 20vmin;
+  border-radius: 20vmin;
+  opacity: 0.1;
+  backface-visibility: hidden;
+  position: absolute;
+  animation: move;
+  animation-duration: 45;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.background span:nth-child(0) {
+  color: hsl(var(--primary));
+  top: 49%;
+  left: 75%;
+  animation-duration: 29s;
+  animation-delay: -5s;
+  transform-origin: 11vw 16vh;
+  box-shadow: -40vmin 0 5.527036783669862vmin currentColor;
+}
+.background span:nth-child(1) {
+  color: hsl(var(--primary));
+  top: 74%;
+  left: 46%;
+  animation-duration: 35s;
+  animation-delay: -9s;
+  transform-origin: -20vw -9vh;
+  box-shadow: 40vmin 0 5.927189188143348vmin currentColor;
+}
+.background span:nth-child(2) {
+  color: hsl(var(--primary));
+  top: 82%;
+  left: 81%;
+  animation-duration: 27s;
+  animation-delay: -36s;
+  transform-origin: -7vw 1vh;
+  box-shadow: -40vmin 0 5.284097620358591vmin currentColor;
+}
+.background span:nth-child(3) {
+  color: hsl(var(--secondary));
+  top: 12%;
+  left: 67%;
+  animation-duration: 44s;
+  animation-delay: -27s;
+  transform-origin: 25vw 15vh;
+  box-shadow: 40vmin 0 5.922920328017495vmin currentColor;
+}
+.background span:nth-child(4) {
+  color: hsl(var(--secondary));
+  top: 41%;
+  left: 95%;
+  animation-duration: 45s;
+  animation-delay: -25s;
+  transform-origin: 9vw -13vh;
+  box-shadow: 40vmin 0 5.909412321465949vmin currentColor;
+}
+.background span:nth-child(5) {
+  color: hsl(var(--secondary));
+  top: 78%;
+  left: 5%;
+  animation-duration: 32s;
+  animation-delay: -43s;
+  transform-origin: -7vw 5vh;
+  box-shadow: -40vmin 0 5.366503193055328vmin currentColor;
+}
+.background span:nth-child(6) {
+  color: hsl(var(--secondary));
+  top: 45%;
+  left: 8%;
+  animation-duration: 7s;
+  animation-delay: -30s;
+  transform-origin: -8vw -3vh;
+  box-shadow: -40vmin 0 5.1872738706158vmin currentColor;
+}
+.background span:nth-child(7) {
+  color: hsl(var(--primary));
+  top: 32%;
+  left: 17%;
+  animation-duration: 29s;
+  animation-delay: -37s;
+  transform-origin: -11vw 25vh;
+  box-shadow: 40vmin 0 5.3231291682713024vmin currentColor;
+}
+.background span:nth-child(8) {
+  color: hsl(var(--primary));
+  top: 23%;
+  left: 17%;
+  animation-duration: 18s;
+  animation-delay: -32s;
+  transform-origin: -6vw -1vh;
+  box-shadow: -40vmin 0 5.849380962843153vmin currentColor;
+}
+.background span:nth-child(9) {
+  color: hsl(var(--primary));
+  top: 42%;
+  left: 29%;
+  animation-duration: 20s;
+  animation-delay: -38s;
+  transform-origin: 12vw 4vh;
+  box-shadow: 40vmin 0 5.695710492308374vmin currentColor;
+}
+.background span:nth-child(10) {
+  color: hsl(var(--secondary));
+  top: 81%;
+  left: 100%;
+  animation-duration: 12s;
+  animation-delay: -37s;
+  transform-origin: -12vw -20vh;
+  box-shadow: 40vmin 0 5.411552101952046vmin currentColor;
+}
+.test {
+  color: currentColor;
+}
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --wallpaper: linear-gradient(
+        rgba(241, 245, 249, 1),
+        rgba(241, 245, 249, 0.8)
+      ),
+      url("https://static.vecteezy.com/system/resources/previews/011/188/937/non_2x/abstract-white-and-gray-color-modern-design-background-with-geometric-shape-illustration-vector.jpg");
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+
+    --primary: 0 0% 12%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 202 100% 34%;
+    --secondary-foreground: 0 0% 9%;
+    --tertiary: 202 62% 56%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 12%;
+    --foreground: 0 0% 98%;
+    --wallpaper: linear-gradient(hsl(0 0% 12%), hsla(0, 0%, 12%, 0.918)),
+      url("https://static.vecteezy.com/system/resources/previews/011/188/937/non_2x/abstract-white-and-gray-color-modern-design-background-with-geometric-shape-illustration-vector.jpg");
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 97%;
+    --primary-foreground: 0 0% 9%;
+
+    --secondary: 202 100% 34%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+  }
+}
+div::-webkit-scrollbar {
+  width: 4px;
+}
+/* Ascenseur */
+div::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 50px;
+}
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
