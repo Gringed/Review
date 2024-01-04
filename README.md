@@ -14,6 +14,10 @@
   <p align="center">
     An awesome app with your All Tasks, Planning, Job & Tools. <b>In One</b>.
     <br />
+    <br />
+    <i>Based on Trello.</i>
+    <br />
+    <br />
     <a href="https://github.com/Gringed/Review/blob/master/README.md"><strong>Explore the docs »</strong></a>
     <br />
     <br />
