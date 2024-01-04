@@ -6,6 +6,7 @@ import {
   ArrowRight,
   ChevronLeft,
   ChevronRight,
+  Crown,
   Menu,
   PanelLeftOpen,
   PanelRight,
@@ -19,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Accordion } from "@/components/ui/accordion";
-
+import { CircularProgress } from "@nextui-org/react"
 import { NavItem, Organization } from "./nav-item";
 import { MobileSidebar } from "./mobile-sidebar";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
@@ -27,9 +28,11 @@ import { useState } from "react";
 
 interface SidebarProps {
   storageKey?: string;
+  quotas: number;
+  isPro: boolean;
 }
 
-export const Sidebar = ({ storageKey = "t-sidebar-state" }: SidebarProps) => {
+export const Sidebar = ({ storageKey = "t-sidebar-state", quotas, isPro }: SidebarProps) => {
   const [expanded, setExpanded] = useLocalStorage<Record<string, any>>(
     storageKey,
     {}
@@ -83,9 +86,8 @@ export const Sidebar = ({ storageKey = "t-sidebar-state" }: SidebarProps) => {
       <div className="w-full flex justify-end ">
         <Button
           onClick={() => setCollapse(!collapse)}
-          className={`relative ${
-            storageKey === "t-sidebar-state" && "hidden md:flex me-3"
-          } hidden `}
+          className={`relative ${storageKey === "t-sidebar-state" && "hidden md:flex me-3"
+            } hidden `}
           variant="outline"
           size="sm"
         >
@@ -107,14 +109,13 @@ export const Sidebar = ({ storageKey = "t-sidebar-state" }: SidebarProps) => {
         </Button>
       </div>
       <div
-      style={{height: "80vh"}}
-        className={`relative ${
-          storageKey === "t-sidebar-state"
-            ? collapse
-              ? " w-0"
-              : "hidden md:block w-64 me-3"
-            : "w-auto"
-        }  transition-all  duration-300 overflow-hidden shrink-0`}
+        style={{ height: "80vh" }}
+        className={`relative ${storageKey === "t-sidebar-state"
+          ? collapse
+            ? " w-0"
+            : "hidden md:block w-64 me-3"
+          : "w-auto"
+          }  transition-all  duration-300 overflow-hidden shrink-0`}
       >
         <div className="font-bold text-sm flex items-center">
           <span className="">Workspaces</span>
@@ -150,15 +151,61 @@ export const Sidebar = ({ storageKey = "t-sidebar-state" }: SidebarProps) => {
         </div>
       </div>
       <div
-        className={`absolute bottom-0 ${
-          storageKey === "t-sidebar-state"
+        className={`absolute bottom-0 ${storageKey === "t-sidebar-state"
             ? collapse
               ? " w-0"
-              : "hidden md:flex w-full -ml-4"
-            : "w-auto"
-        }  transition-all  duration-300 overflow-hidden bg-primary `}
+              : "hidden md:flex justify-center rounded-e-md w-full -ml-4"
+            : " w-full -ml-2"
+          }  transition-all  duration-300 overflow-hidden bg-primary-foreground shadow `}
       >
-        <div>Coucou</div>
+        <div className="flex text-primary flex-col justify-center items-center ">
+          <div className="py-2 font-bold">My Organization quotas</div>
+          <div className="py-2 flex gap-5">
+            <CircularProgress
+              classNames={{
+                svg: "w-16 h-16 ",
+                indicator: "stroke-secondary",
+                track: "stroke-secondary/10",
+                value: "text-sm font-semibold text-secondary",
+              }}
+              value={quotas}
+              maxValue={isPro ? 50 : 5}
+              strokeWidth={4}
+              showValueLabel={true}
+              label={"Boards"}
+            />
+            <CircularProgress
+              classNames={{
+                svg: "w-16 h-16 ",
+                indicator: "stroke-secondary",
+                track: "stroke-secondary/10",
+                value: "text-sm font-semibold text-secondary",
+              }}
+              value={1}
+              maxValue={isPro ? 20 : 2}
+              strokeWidth={4}
+              showValueLabel={true}
+              label={"Jobs"}
+            />
+          </div>
+          {isPro ? (
+            <Button
+              disabled
+              variant={"outline"}
+              className="text-primary my-2 font-bold"
+            >
+              <Crown size={20} className="me-1" /> You are a Pro Reviewer
+            </Button>
+          ) : (
+            <Button
+              onClick={() => console.log("On paie")}
+              variant={"outline"}
+              className="text-primary my-2 font-bold hover:bg-secondary hover:shadow hover:from-transparent hover:text-primary-foreground"
+            >
+              <Crown size={20} className="me-1" /> Become a pro Reviewer
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );
