@@ -10,7 +10,7 @@ import { Sheet, SheetContent } from "@/components/ui/sheet";
 
 import { Sidebar } from "./sidebar";
 
-export const MobileSidebar = () => {
+export const MobileSidebar = ({quotas}: any) => {
   const pathname = usePathname();
   const [isMounted, setIsMounted] = useState(false);
 
@@ -42,7 +42,7 @@ export const MobileSidebar = () => {
       </Button>
       <Sheet open={isOpen} onOpenChange={onClose}>
         <SheetContent side="left" className="p-2 pt-10">
-          <Sidebar storageKey="t-sidebar-mobile-state" />
+          <Sidebar quotas={quotas} storageKey="t-sidebar-mobile-state" />
         </SheetContent>
       </Sheet>
     </>

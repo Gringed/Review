@@ -9,19 +9,50 @@ generator client {
 }
 
 model Board {
-  id            String @id @default(uuid())
+  id            String   @id @default(uuid())
   orgId         String
+  userId        String
   title         String
   imageId       String
-  imageThumbUrl String @db.Text
-  imageFullUrl  String @db.Text
-  imageUserName String @db.Text
-  imageLinkHTML String @db.Text
+  imageThumbUrl String   @db.Text
+  imageFullUrl  String   @db.Text
+  imageUserName String   @db.Text
+  imageLinkHTML String   @db.Text
+  author        User     @relation(fields: [authorId], references: [id])
+  authorId      String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  List          List[]
 
-  lists List[]
+  @@index(authorId)
+}
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Organization {
+  id      String @id @default(uuid())
+  name    String
+  admin   String
+  members User[]
+}
+
+model Profile {
+  id     String  @id @default(uuid())
+  bio    String?
+  user   User    @relation(fields: [userId], references: [id])
+  userId String  @unique
+
+  @@index(userId)
+}
+
+model User {
+  id            String       @id @default(uuid())
+  email         String       @unique
+  name          String?
+  boards        Board[]
+  userId        String
+  organizations Organization @relation(fields: [userId], references: [id])
+  profile       Profile?
+
+  @@index([userId])
 }
 
 model Jobs {
@@ -32,15 +63,12 @@ model Jobs {
 }
 
 model List {
-  id    String @id @default(uuid())
-  title String
-  order Int
-
-  boardId String
-  board   Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
-
-  cards Card[]
-
+  id        String   @id @default(uuid())
+  title     String
+  order     Int
+  boardId   String
+  board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  cards     Card[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -48,16 +76,14 @@ model List {
 }
 
 model Card {
-  id          String  @id @default(uuid())
+  id          String   @id @default(uuid())
   title       String
   order       Int
-  description String? @db.Text
-
-  listId String
-  list   List   @relation(fields: [listId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  description String?  @db.Text
+  listId      String
+  list        List     @relation(fields: [listId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([listId])
 }

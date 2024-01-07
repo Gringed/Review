@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs";
 
 import { db } from "@/lib/db";
-import { MAX_FREE_BOARDS } from "@/constants/boards";
+import { MAX_FREE_BOARDS, MAX_FREE_ORG } from "@/constants/boards";
 
 export const incrementAvailableCount = async () => {
   const { orgId } = auth();
@@ -61,6 +61,24 @@ export const hasAvailableCount = async () => {
   });
 
   if (!orgLimit || orgLimit.count < MAX_FREE_BOARDS) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const hasAvailableOrgCount = async () => {
+  const { userId } = auth();
+
+  if (!userId) {
+    throw new Error ("Unauthorized");
+  }
+
+  const orgLimit = await db.organization.findMany({
+    where: { admin: userId }
+  });
+
+  if (!orgLimit || orgLimit.length < MAX_FREE_ORG) {
     return true;
   } else {
     return false;

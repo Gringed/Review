@@ -29,7 +29,7 @@ import { useState } from "react";
 interface SidebarProps {
   storageKey?: string;
   quotas: number;
-  isPro: boolean;
+  isPro?: boolean;
 }
 
 export const Sidebar = ({ storageKey = "t-sidebar-state", quotas, isPro }: SidebarProps) => {
@@ -152,10 +152,10 @@ export const Sidebar = ({ storageKey = "t-sidebar-state", quotas, isPro }: Sideb
       </div>
       <div
         className={`absolute bottom-0 ${storageKey === "t-sidebar-state"
-            ? collapse
-              ? " w-0"
-              : "hidden md:flex justify-center rounded-e-md w-full -ml-4"
-            : " w-full -ml-2"
+          ? collapse
+            ? " w-0"
+            : "hidden md:flex justify-center rounded-e-md w-full -ml-4"
+          : " w-full -ml-2"
           }  transition-all  duration-300 overflow-hidden bg-primary-foreground shadow `}
       >
         <div className="flex text-primary flex-col justify-center items-center ">
@@ -181,8 +181,8 @@ export const Sidebar = ({ storageKey = "t-sidebar-state", quotas, isPro }: Sideb
                 track: "stroke-secondary/10",
                 value: "text-sm font-semibold text-secondary",
               }}
-              value={1}
-              maxValue={isPro ? 20 : 2}
+              value={6}
+              maxValue={isPro ? 500 : 20}
               strokeWidth={4}
               showValueLabel={true}
               label={"Jobs"}

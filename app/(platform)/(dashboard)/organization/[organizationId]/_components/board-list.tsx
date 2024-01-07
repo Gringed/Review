@@ -10,17 +10,21 @@ import { FormPopover } from "@/components/form/form-popover";
 import { MAX_FREE_BOARDS } from "@/constants/boards";
 import { getAvailableCount } from "@/lib/org-limit";
 import { checkSubscription } from "@/lib/subscription";
+import { getUrl } from 'nextjs-current-url/server';
+import { NextPageContext } from "next";
 
-export const BoardList = async () => {
-  const { orgId } = auth();
+export const BoardList = async ({ url }: { url: any }) => {
+  
+  console.log(url.params.organizationId)
+  const { userId } = auth()
 
-  if (!orgId) {
+  if (!url) {
     return redirect("/select-org");
   }
 
   const boards = await db.board.findMany({
     where: {
-      orgId,
+      orgId: url.params.organizationId,
     },
     orderBy: {
       createdAt: "desc"
@@ -42,7 +46,7 @@ export const BoardList = async () => {
             key={board.id}
             href={`/board/${board.id}`}
             className="group relative aspect-video bg-no-repeat bg-center bg-cover rounded-sm h-full w-full overflow-hidden"
-            style={board.imageId !== "color" ? { backgroundImage: `url(${board.imageThumbUrl})` } : {background: board.imageThumbUrl}}
+            style={board.imageId !== "color" ? { backgroundImage: `url(${board.imageThumbUrl})` } : { background: board.imageThumbUrl }}
           >
             <div className="absolute inset-0 group-hover:bg-black/40 group-hover:backdrop-blur  transition-colors" />
             <p className="relative p-3 bg-muted/40 shadow font-semibold text-primary">
