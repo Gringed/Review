@@ -11,9 +11,7 @@ export default authMiddleware({
     console.log(auth)
     if (auth.userId && auth.isPublicRoute) {
       let path = `/select-org`;
-      if (auth.orgId) {
-        path = `/organization/${auth.orgId}`;
-      }
+
       const orgSelection = new URL(path, req.url);
       return NextResponse.redirect(orgSelection);
     }

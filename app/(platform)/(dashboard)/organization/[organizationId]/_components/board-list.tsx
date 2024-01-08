@@ -15,10 +15,18 @@ import { NextPageContext } from "next";
 
 export const BoardList = async ({ url }: { url: any }) => {
   
-  console.log(url.params.organizationId)
   const { userId } = auth()
+  console.log(url.params.organizationId)
+  if (!userId) {
+    return redirect("/");
+  }
+  const organizations = await db.organization.findMany({
+    where: {
+      admin: userId,
+    },
 
-  if (!url) {
+  });
+  if (!userId || !organizations.filter((x) => x.id === url.params.organizationId).length) {
     return redirect("/select-org");
   }
 

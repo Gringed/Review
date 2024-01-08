@@ -6,15 +6,18 @@ import { UserButton, OrganizationSwitcher } from "@clerk/nextjs";
 import { MobileSidebar } from "./mobile-sidebar";
 import { FormPopover } from "@/components/form/form-popover";
 import { Plus } from "lucide-react";
+import { useParams } from "next/navigation";
 
 console.log(localStorage.getItem("theme"));
 export const Navbar = () => {
+  const params = useParams()
+
   return (
     <nav className="fixed z-50 top-0 px-4 w-full text-primary bg-background h-14 border-b shadow-sm  flex items-center">
       <MobileSidebar />
       <div className="flex items-center gap-x-4">
         <div className="hidden md:flex">
-          <Logo />
+          <Logo params={params.organizationId} />
         </div>
         <FormPopover align="start" side="bottom" sideOffset={18}>
           <Button
