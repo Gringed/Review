@@ -10,7 +10,7 @@ const OrganizationPage = async (context: NextPageContext) => {
   console.log(context)
   return (
     <div className="w-full mb-20">
-      <Info isPro={isPro} />
+      <Info isPro={isPro} url={context} />
       <Separator className="my-6" />
       <BoardList url={context} />
     </div>
