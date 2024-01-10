@@ -7,7 +7,7 @@ import { NextPageContext } from "next";
 
 const OrganizationPage = async (context: NextPageContext) => {
   const isPro = await checkSubscription();
-  console.log(context)
+ 
   return (
     <div className="w-full mb-20">
       <Info isPro={isPro} url={context} />

@@ -16,7 +16,7 @@ const OrganizationLayout = async ({ children }: { children: React.ReactNode }) =
   }
 
   const request = new NextRequest(referer)
-  console.log(request.nextUrl.pathname.split("/")[2])
+  
 
   const availableCount = await getAvailableCount();
   const { userId } = auth()

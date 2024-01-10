@@ -10,9 +10,9 @@ import {
 } from "lucide-react";
 
 import { cn, normalizeText } from "@/lib/utils";
-import {
+import { 
   AccordionContent,
-  AccordionItem,
+  AccordionItem, 
   AccordionTrigger
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
@@ -79,20 +79,17 @@ export const NavItem = ({
           isActive && !isExpanded && "bg-secondary/10 text-secondary font-semibold"
         )}
       >
-        <div className="flex items-center gap-x-2">
+        <div className="flex items-center gap-2">
           <div className="w-7 h-7 relative">
-
-            <div
-              className="rounded-full bg-secondary-foreground border-4 border-secondary  object-cover h-full w-full"
-            />
-            <div className="flex items-center justify-center absolute top-0 bottom-0 dark:text-black text-white font-bold left-0 right-0">
-              {normalizeText(organization.name.substring(0, 1), 1, 'uppercase')}
-            </div>
-
-
+          <div
+          className="rounded-full bg-secondary-foreground border-4 border-secondary w-full h-full"
+        />
+        <div className="flex items-center justify-center absolute top-0 bottom-0 dark:text-black text-white font-semibold left-0 right-0">
+          {normalizeText(organization.name.substring(0, 1), 1, 'uppercase')}
+        </div>
           </div>
           <span className=" text-sm">
-            {organization.name}
+            {normalizeText(organization.name, 20, "none")}
           </span>
         </div>
       </AccordionTrigger>
