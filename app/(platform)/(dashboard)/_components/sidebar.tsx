@@ -14,7 +14,7 @@ import {
   Plus,
 } from "lucide-react";
 import { useLocalStorage } from "usehooks-ts";
-import { useOrganization, useOrganizationList } from "@clerk/nextjs";
+import { auth, useOrganization, useOrganizationList } from "@clerk/nextjs";
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -25,22 +25,24 @@ import { NavItem, Organization } from "./nav-item";
 import { MobileSidebar } from "./mobile-sidebar";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { useState } from "react";
+import { db } from "@/lib/db";
+import { redirect } from "next/navigation";
 
 interface SidebarProps {
   storageKey?: string;
   quotas: number;
   isPro?: boolean;
+  organization: any;
+  organizations: any
 }
 
-export const Sidebar = ({ storageKey = "t-sidebar-state", quotas, isPro }: SidebarProps) => {
+export const Sidebar = ({ storageKey = "t-sidebar-state", quotas, isPro, organization, organizations }: SidebarProps) => {
   const [expanded, setExpanded] = useLocalStorage<Record<string, any>>(
     storageKey,
     {}
   );
   const [collapse, setCollapse] = useState<Boolean>(false);
 
-  const { organization: activeOrganization, isLoaded: isLoadedOrg } =
-    useOrganization();
   const { userMemberships, isLoaded: isLoadedOrgList } = useOrganizationList({
     userMemberships: {
       infinite: true,
@@ -65,7 +67,7 @@ export const Sidebar = ({ storageKey = "t-sidebar-state", quotas, isPro }: Sideb
     }));
   };
 
-  if (!isLoadedOrg || !isLoadedOrgList || userMemberships.isLoading) {
+  /* if (!isLoadedOrg || !isLoadedOrgList || userMemberships.isLoading) {
     return (
       <>
         <div className="flex items-center justify-between mb-2">
@@ -79,7 +81,7 @@ export const Sidebar = ({ storageKey = "t-sidebar-state", quotas, isPro }: Sideb
         </div>
       </>
     );
-  }
+  } */
 
   return (
     <div className="h-full">
@@ -138,12 +140,12 @@ export const Sidebar = ({ storageKey = "t-sidebar-state", quotas, isPro }: Sideb
             defaultValue={defaultAccordionValue}
             className="space-y-2"
           >
-            {userMemberships.data.map(({ organization }) => (
+            {organizations.map((org: any) => (
               <NavItem
-                key={organization.id}
-                isActive={activeOrganization?.id === organization.id}
-                isExpanded={expanded[organization.id]}
-                organization={organization as Organization}
+                key={org.id}
+                isActive={organization?.id === org.id}
+                isExpanded={expanded[org.id]}
+                organization={org}
                 onExpand={onExpand}
               />
             ))}

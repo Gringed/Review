@@ -16,7 +16,7 @@ import { NextPageContext } from "next";
 export const BoardList = async ({ url }: { url: any }) => {
   
   const { userId } = auth()
-  console.log(url.params.organizationId)
+ 
   if (!userId) {
     return redirect("/");
   }

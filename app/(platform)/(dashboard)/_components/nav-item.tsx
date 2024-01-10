@@ -9,10 +9,10 @@ import {
   Settings,
 } from "lucide-react";
 
-import { cn } from "@/lib/utils";
-import { 
+import { cn, normalizeText } from "@/lib/utils";
+import {
   AccordionContent,
-  AccordionItem, 
+  AccordionItem,
   AccordionTrigger
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
@@ -20,9 +20,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export type Organization = {
   id: string;
-  slug: string;
-  imageUrl: string;
   name: string;
+  admin: any;
 };
 
 interface NavItemProps {
@@ -82,12 +81,15 @@ export const NavItem = ({
       >
         <div className="flex items-center gap-x-2">
           <div className="w-7 h-7 relative">
-            <Image
-              fill
-              src={organization.imageUrl}
-              alt="Organization"
-              className="rounded-sm object-cover"
+
+            <div
+              className="rounded-full bg-secondary-foreground border-4 border-secondary  object-cover h-full w-full"
             />
+            <div className="flex items-center justify-center absolute top-0 bottom-0 dark:text-black text-white font-bold left-0 right-0">
+              {normalizeText(organization.name.substring(0, 1), 1, 'uppercase')}
+            </div>
+
+
           </div>
           <span className=" text-sm">
             {organization.name}
