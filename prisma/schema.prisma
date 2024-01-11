@@ -29,7 +29,6 @@ model Organization {
   id      String @id @default(uuid())
   name    String
   admin   String
-  members User[]
 }
 
 model Profile {
@@ -43,14 +42,10 @@ model Profile {
 
 model User {
   id            String       @id @default(uuid())
-  email         String       @unique
-  name          String?
-
+  email         String?       @unique
+  username          String?
   userId        String
-  organizations Organization @relation(fields: [userId], references: [id])
   profile       Profile?
-
-  @@index([userId])
 }
 
 model Jobs {

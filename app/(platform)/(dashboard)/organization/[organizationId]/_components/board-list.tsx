@@ -14,9 +14,9 @@ import { getUrl } from 'nextjs-current-url/server';
 import { NextPageContext } from "next";
 
 export const BoardList = async ({ url }: { url: any }) => {
-  
+
   const { userId } = auth()
- 
+
   if (!userId) {
     return redirect("/");
   }
@@ -26,13 +26,13 @@ export const BoardList = async ({ url }: { url: any }) => {
     },
 
   });
-  if (!userId || !organizations.filter((x) => x.id === url.params.organizationId).length) {
+  if (!userId || !organizations.filter((x) => x.id === url).length) {
     return redirect("/select-org");
   }
 
   const boards = await db.board.findMany({
     where: {
-      orgId: url.params.organizationId,
+      orgId: url,
     },
     orderBy: {
       createdAt: "desc"
