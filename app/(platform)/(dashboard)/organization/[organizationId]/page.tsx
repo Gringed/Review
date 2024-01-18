@@ -8,8 +8,7 @@ import { Sidebar } from "../../_components/sidebar";
 import { getAvailableCount } from "@/lib/org-limit";
 import { auth } from "@clerk/nextjs";
 import { db } from "@/lib/db";
-import { headers } from "next/headers";
-import { NextRequest } from "next/server";
+import Navbar from "../../_components/navbar";
 
 const OrganizationPage = async ({
   params,
@@ -37,6 +36,7 @@ const OrganizationPage = async ({
   });
   return (
     <>
+      <Navbar url={params.organizationId} />
       <div className="relative">
         <Sidebar
           quotas={availableCount}

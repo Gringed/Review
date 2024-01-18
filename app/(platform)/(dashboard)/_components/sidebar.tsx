@@ -20,34 +20,33 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Accordion } from "@/components/ui/accordion";
-import { CircularProgress } from "@nextui-org/react"
+import { CircularProgress } from "@nextui-org/react";
 import { NavItem, Organization } from "./nav-item";
 import { MobileSidebar } from "./mobile-sidebar";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { useState } from "react";
-import { db } from "@/lib/db";
-import { redirect } from "next/navigation";
+import { useMobileSidebar } from "@/hooks/use-mobile-sidebar";
 
 interface SidebarProps {
   storageKey?: string;
   quotas: number;
   isPro?: boolean;
   organization: any;
-  organizations: any
+  organizations: any;
 }
 
-export const Sidebar = ({ storageKey = "t-sidebar-state", quotas, isPro, organization, organizations }: SidebarProps) => {
+export const Sidebar = ({
+  storageKey = "t-sidebar-state",
+  quotas,
+  isPro,
+  organization,
+  organizations,
+}: SidebarProps) => {
   const [expanded, setExpanded] = useLocalStorage<Record<string, any>>(
     storageKey,
     {}
   );
   const [collapse, setCollapse] = useState<Boolean>(false);
-
-  const { userMemberships, isLoaded: isLoadedOrgList } = useOrganizationList({
-    userMemberships: {
-      infinite: true,
-    },
-  });
 
   const defaultAccordionValue: string[] = Object.keys(expanded).reduce(
     (acc: string[], key: string) => {
@@ -67,7 +66,7 @@ export const Sidebar = ({ storageKey = "t-sidebar-state", quotas, isPro, organiz
     }));
   };
 
-  /* if (!isLoadedOrg || !isLoadedOrgList || userMemberships.isLoading) {
+   if (!organizations) {
     return (
       <>
         <div className="flex items-center justify-between mb-2">
@@ -81,15 +80,18 @@ export const Sidebar = ({ storageKey = "t-sidebar-state", quotas, isPro, organiz
         </div>
       </>
     );
-  } */
+  } 
 
   return (
     <div className="h-full">
       <div className="w-full flex justify-end ">
         <Button
           onClick={() => setCollapse(!collapse)}
-          className={`relative ${storageKey === "t-sidebar-state" && "hidden md:flex me-3"
-            } hidden `}
+          className={`relative ${
+            storageKey === "t-sidebar-state"
+              ? "flex me-3"
+              : " hidden md:flex me-3"
+          } `}
           variant="outline"
           size="sm"
         >
@@ -105,21 +107,22 @@ export const Sidebar = ({ storageKey = "t-sidebar-state", quotas, isPro, organiz
             />
           )}
           <span className="absolute flex top-0 right-0 h-3 w-3">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
           </span>
         </Button>
       </div>
       <div
         style={{ height: "80vh" }}
-        className={`relative ${storageKey === "t-sidebar-state"
-          ? collapse
-            ? " w-0"
-            : "hidden md:block w-64 me-3"
-          : "w-auto"
-          }  transition-all  duration-300 overflow-hidden shrink-0`}
+        className={`relative ${
+          storageKey === "t-sidebar-state"
+            ? collapse
+              ? " w-0"
+              : "block w-64 me-3"
+            : "w-auto"
+        }  transition-all  duration-300 overflow-hidden shrink-0`}
       >
-        <div className="font-bold text-sm flex items-center">
+        <div className="font-bold text-sm flex items-center px-1 mt-1">
           <span className="">Workspaces</span>
           <Button
             asChild
@@ -153,12 +156,13 @@ export const Sidebar = ({ storageKey = "t-sidebar-state", quotas, isPro, organiz
         </div>
       </div>
       <div
-        className={`absolute bottom-0 ${storageKey === "t-sidebar-state"
-          ? collapse
-            ? " w-0"
-            : "hidden md:flex justify-center rounded-e-md w-full -ml-4"
-          : " w-full -ml-2"
-          }  transition-all  duration-300 overflow-hidden bg-primary-foreground shadow `}
+        className={`absolute bottom-0 ${
+          storageKey === "t-sidebar-state"
+            ? collapse
+              ? " w-0"
+              : "flex justify-center rounded-e-md w-full -ml-4"
+            : " w-full -ml-2"
+        }  transition-all  duration-300 overflow-hidden bg-primary-foreground shadow `}
       >
         <div className="flex text-primary flex-col justify-center items-center ">
           <div className="py-2 font-bold">My Organization quotas</div>

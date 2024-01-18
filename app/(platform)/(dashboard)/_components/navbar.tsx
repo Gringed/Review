@@ -1,23 +1,84 @@
-"use client";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import { UserButton, OrganizationSwitcher } from "@clerk/nextjs";
-import { MobileSidebar } from "./mobile-sidebar";
-import { FormPopover } from "@/components/form/form-popover";
-import { Plus } from "lucide-react";
-import { useParams } from "next/navigation";
+import { UserButton, OrganizationSwitcher, auth } from "@clerk/nextjs";
 
-console.log(localStorage.getItem("theme"));
-export const Navbar = () => {
-  const params = useParams()
+import { FormPopover } from "@/components/form/form-popover";
+
+import { redirect, useParams } from "next/navigation";
+
+import { Activity, CreditCard, Layout, Plus, Settings } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { NavItem } from "./nav-item";
+import { cn, normalizeText } from "@/lib/utils";
+import { db } from "@/lib/db";
+
+import React, { useEffect, useState } from "react";
+import { Router } from "next/router";
+import Link from "next/link";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+
+const Navbar = async ({ url }: { url: any }) => {
+  const { userId } = auth();
+
+  if (!userId) {
+    return null;
+  }
+  const organization = await db.organization.findUnique({
+    where: {
+      id: url,
+    },
+  });
+  const organizations = await db.organization.findMany({
+    where: {
+      admin: userId,
+    },
+  });
+  if (!userId || !organizations.filter((x) => x.id === url).length) {
+    return redirect("/select-org");
+  }
+
+  const routes = [
+    {
+      label: "Boards",
+      icon: <Layout className="h-4 w-4 mr-2" />,
+      href: `/organization/${organization?.id}`,
+    },
+    {
+      label: "Activity",
+      icon: <Activity className="h-4 w-4 mr-2" />,
+      href: `/organization/${organization?.id}/activity`,
+    },
+    {
+      label: "Settings",
+      icon: <Settings className="h-4 w-4 mr-2" />,
+      href: `/organization/${organization?.id}/settings`,
+    },
+    {
+      label: "Billing",
+      icon: <CreditCard className="h-4 w-4 mr-2" />,
+      href: `/organization/${organization?.id}/billing`,
+    },
+  ];
 
   return (
     <nav className="fixed z-50 top-0 px-4 w-full text-primary bg-background h-14 border-b shadow-sm  flex items-center">
-      <MobileSidebar />
       <div className="flex items-center gap-x-4">
         <div className="hidden md:flex">
-          <Logo params={params.organizationId} />
+          <Logo params={organization?.id} />
         </div>
         <FormPopover align="start" side="bottom" sideOffset={18}>
           <Button
@@ -39,18 +100,29 @@ export const Navbar = () => {
         </FormPopover>
       </div>
       <div className="ml-auto flex items-center gap-x-2">
-        <OrganizationSwitcher
-          hidePersonal
-          afterCreateOrganizationUrl="/organization/:id"
-          afterLeaveOrganizationUrl="/select-org"
-          afterSelectOrganizationUrl="/organization/:id"
-          appearance={{
-            elements: {
-              rootBox: "flex",
-              organizationPreviewTextContainer: "hidden md:block",
-            },
-          }}
-        />
+        <NavigationMenu>
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>{organization?.name}</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="flex flex-col w-full gap-3 p-4  ">
+                  {routes.map((component) => (
+                    <div className="flex">
+                      <Link className="flex items-center gap-2 active:bg-slate-100"
+                        key={component.label}
+                        title={component.label}
+                        href={component.href}
+                      >
+                        {component.icon}
+                        {component.label}
+                      </Link>
+                    </div>
+                  ))}
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
         <UserButton
           afterSignOutUrl="/"
           appearance={{
@@ -67,3 +139,5 @@ export const Navbar = () => {
     </nav>
   );
 };
+
+export default Navbar;

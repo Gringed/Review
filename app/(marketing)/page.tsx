@@ -38,7 +38,7 @@ const MarketingPage = () => {
           variant={"secondary"}
           className="font-extrabold text-primary-foreground border-4 border-primary"
         >
-          <Link href={"/signup"}>
+          <Link href={"/sign-up"}>
           <AlignEndHorizontal size={20} className="mr-2" /> Get review for Free
           </Link>
         </Button>
