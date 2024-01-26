@@ -15,9 +15,9 @@ import { decreaseAvailableCount } from "@/lib/org-limit";
 import { checkSubscription } from "@/lib/subscription";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
-  const { userId, orgId } = auth();
+  const { userId } = auth();
 
-  if (!userId || !orgId) {
+  if (!userId) {
     return {
       error: "Unauthorized",
     };
@@ -32,12 +32,11 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     board = await db.board.delete({
       where: {
         id,
-        orgId,
       },
     });
 
     if (!isPro) {
-      await decreaseAvailableCount();
+      await decreaseAvailableCount(board.orgId);
     }
 
     await createAuditLog({
@@ -52,8 +51,8 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     }
   }
 
-  revalidatePath(`/organization/${orgId}`);
-  redirect(`/organization/${orgId}`);
+  revalidatePath(`/organization/${board.orgId}`);
+  redirect(`/organization/${board.orgId}`);
 };
 
 export const deleteBoard = createSafeAction(DeleteBoard, handler);

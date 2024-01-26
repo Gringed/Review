@@ -56,21 +56,25 @@ const Navbar = async ({ url }: { url: any }) => {
       label: "Boards",
       icon: <Layout className="h-4 w-4 mr-2" />,
       href: `/organization/${organization?.id}`,
+      disabled: false
     },
     {
       label: "Activity",
       icon: <Activity className="h-4 w-4 mr-2" />,
       href: `/organization/${organization?.id}/activity`,
+      disabled: true
     },
     {
       label: "Settings",
       icon: <Settings className="h-4 w-4 mr-2" />,
       href: `/organization/${organization?.id}/settings`,
+      disabled: false
     },
     {
       label: "Billing",
       icon: <CreditCard className="h-4 w-4 mr-2" />,
       href: `/organization/${organization?.id}/billing`,
+      disabled: true
     },
   ];
 
@@ -108,7 +112,9 @@ const Navbar = async ({ url }: { url: any }) => {
                 <ul className="flex flex-col w-full gap-3 p-4  ">
                   {routes.map((component) => (
                     <div className="flex">
-                      <Link className="flex items-center gap-2 active:bg-slate-100"
+                      <Link className={`flex items-center gap-2 active:bg-slate-100 ${component.disabled && "pointer-events-none opacity-40"}`}
+                      tabIndex={component.disabled ? -1 : undefined}
+                      aria-disabled={component.disabled}
                         key={component.label}
                         title={component.label}
                         href={component.href}

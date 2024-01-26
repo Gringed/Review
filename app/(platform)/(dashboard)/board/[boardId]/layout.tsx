@@ -12,7 +12,7 @@ export async function generateMetadata({
 }) {
   const { orgId } = auth();
 
-  if (!orgId) {
+  if (!params) {
     return {
       title: "Board",
     };
@@ -21,7 +21,6 @@ export async function generateMetadata({
   const board = await db.board.findUnique({
     where: {
       id: params.boardId,
-      orgId,
     },
   });
 

@@ -42,6 +42,7 @@
     "zustand": "^4.4.6"
   },
   "devDependencies": {
+    "@hello-pangea/dnd": "^16.5.0",
     "@testing-library/jest-dom": "^6.2.0",
     "@testing-library/react": "^14.1.2",
     "@types/lodash": "^4.14.202",

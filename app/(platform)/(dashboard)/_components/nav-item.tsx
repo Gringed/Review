@@ -45,21 +45,25 @@ export const NavItem = ({
       label: "Boards",
       icon: <Layout className="h-4 w-4 mr-2" />,
       href: `/organization/${organization.id}`,
+      disabled: false
     },
     {
       label: "Activity",
       icon: <Activity className="h-4 w-4 mr-2" />,
       href: `/organization/${organization.id}/activity`,
+      disabled: true
     },
     {
       label: "Settings",
       icon: <Settings className="h-4 w-4 mr-2" />,
       href: `/organization/${organization.id}/settings`,
+      disabled: false
     },
     {
       label: "Billing",
       icon: <CreditCard className="h-4 w-4 mr-2" />,
       href: `/organization/${organization.id}/billing`,
+      disabled: true
     },
   ];
 
@@ -97,6 +101,7 @@ export const NavItem = ({
         {routes.map((route) => (
           <Button
             key={route.href}
+            disabled={route.disabled}
             size="sm"
             onClick={() => onClick(route.href)}
             className={cn(

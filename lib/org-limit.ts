@@ -26,8 +26,8 @@ export const incrementAvailableCount = async (orgId: string) => {
   }
 };
 
-export const decreaseAvailableCount = async () => {
-  const { orgId } = auth();
+export const decreaseAvailableCount = async (orgId: string) => {
+
 
   if (!orgId) {
     throw new Error("Unauthorized");
