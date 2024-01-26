@@ -3,8 +3,8 @@ import { auth } from "@clerk/nextjs";
 import { db } from "@/lib/db";
 import { MAX_FREE_BOARDS, MAX_FREE_ORG } from "@/constants/boards";
 
-export const incrementAvailableCount = async () => {
-  const { orgId } = auth();
+export const incrementAvailableCount = async (orgId: string) => {
+  const { userId } = auth();
 
   if (!orgId) {
     throw new Error("Unauthorized");
@@ -49,8 +49,8 @@ export const decreaseAvailableCount = async () => {
   }
 };
 
-export const hasAvailableCount = async () => {
-  const { orgId } = auth();
+export const hasAvailableCount = async (orgId: string) => {
+  const { userId } = auth();
 
   if (!orgId) {
     throw new Error ("Unauthorized");
@@ -85,8 +85,8 @@ export const hasAvailableOrgCount = async () => {
   }
 };
 
-export const getAvailableCount = async () => {
-  const { orgId } = auth();
+export const getAvailableCount = async (orgId: string) => {
+  const { userId } = auth();
 
   if (!orgId) {
     return 0;

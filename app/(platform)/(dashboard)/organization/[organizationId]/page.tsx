@@ -16,7 +16,7 @@ const OrganizationPage = async ({
   params: { organizationId: string };
 }) => {
   const isPro = await checkSubscription();
-  const availableCount = await getAvailableCount();
+  const availableCount = await getAvailableCount(params.organizationId);
   const { userId } = auth();
 
   if (!userId) {

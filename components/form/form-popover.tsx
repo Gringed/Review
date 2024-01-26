@@ -3,7 +3,7 @@
 import { ElementRef, useRef } from "react";
 import { toast } from "sonner";
 import { X } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 import {
   Popover,
@@ -36,7 +36,8 @@ export const FormPopover = ({
   const proModal = useProModal();
   const router = useRouter();
   const closeRef = useRef<ElementRef<"button">>(null);
-
+  const params = useParams()
+  console.log(params)
   const { execute, fieldErrors } = useAction(createBoard, {
     onSuccess: (data) => {
       toast.success("Board created!");
@@ -53,8 +54,9 @@ export const FormPopover = ({
     const title = formData.get("title") as string;
     const image = formData.get("image") as string;
     const color = formData.get("image") as string;
+    const orgId = params.organizationId as string
 
-    execute({ title, image, color });
+    execute({ title, image, color, orgId });
   };
 
   return (

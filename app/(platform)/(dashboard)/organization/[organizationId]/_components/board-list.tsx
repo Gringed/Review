@@ -39,7 +39,7 @@ export const BoardList = async ({ url }: { url: any }) => {
     }
   });
 
-  const availableCount = await getAvailableCount();
+  const availableCount = await getAvailableCount(url);
   const isPro = await checkSubscription();
 
   return (

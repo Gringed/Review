@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs";
 import { notFound, redirect } from "next/navigation";
 import React from "react";
 import { BoardNavbar } from "./_components/board-navbar";
+import Navbar from "../../_components/navbar";
 
 export async function generateMetadata({
   params,
@@ -36,15 +37,9 @@ const BoardIdLayout = async ({
   children: React.ReactNode;
   params: { boardId: string };
 }) => {
-  const { orgId } = auth();
-
-  if (!orgId) {
-    redirect("/select-org");
-  }
   const board = await db.board.findUnique({
     where: {
       id: params.boardId,
-      orgId,
     },
   });
 
@@ -53,18 +48,21 @@ const BoardIdLayout = async ({
   }
 
   return (
-    <div
-      className="relative h-screen bg-no-repeat bg-cover bg-center"
-      style={
-        board.imageId !== "color"
-          ? { backgroundImage: `url(${board.imageFullUrl})` }
-          : { background: board.imageFullUrl }
-      }
-    >
-      <BoardNavbar data={board} />
-      <div className="absolute inset-0 bg-black/10" />
-      <main className="relative pt-28 h-full">{children}</main>
-    </div>
+    <>
+      <Navbar url={board.orgId} />
+      <div
+        className="relative h-screen bg-no-repeat bg-cover bg-center"
+        style={
+          board.imageId !== "color"
+            ? { backgroundImage: `url(${board.imageFullUrl})` }
+            : { background: board.imageFullUrl }
+        }
+      >
+        <BoardNavbar data={board} />
+        <div className="absolute inset-0 bg-black/10" />
+        <main className="relative pt-28 h-full">{children}</main>
+      </div>
+    </>
   );
 };
 

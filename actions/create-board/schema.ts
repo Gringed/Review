@@ -11,5 +11,6 @@ export const CreateBoard = z.object({
     required_error: "Image or color is required",
     invalid_type_error: "Image or color is required",
   }),
-  color: z.string()
+  color: z.string(),
+  orgId: z.string()
 });

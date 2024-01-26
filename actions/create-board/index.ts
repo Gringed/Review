@@ -17,15 +17,16 @@ import {
 import { checkSubscription } from "@/lib/subscription";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
-  const { userId, orgId } = auth();
+  const { userId } = auth();
 
-  if (!userId || !orgId) {
+  if (!userId) {
     return {
       error: "Unauthorized",
     };
   }
+  const { title, image, orgId } = data;
 
-  const canCreate = await hasAvailableCount();
+  const canCreate = await hasAvailableCount(orgId);
   const isPro = await checkSubscription();
 
   if (!canCreate && !isPro) {
@@ -34,7 +35,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     }
   }
 
-  const { title, image } = data;
 
   const [
     imageId,
@@ -67,7 +67,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     });
 
     if (!isPro) {
-     await incrementAvailableCount();
+     await incrementAvailableCount(orgId);
     }
 
     await createAuditLog({
