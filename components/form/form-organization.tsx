@@ -64,7 +64,7 @@ export const FormOrganization = ({
         sideOffset={sideOffset}
       >
         <div className="text-sm font-medium text-center text-neutral-600 pb-4">
-          Create board
+          Create organization
         </div>
         <PopoverClose ref={closeRef} asChild>
           <Button
@@ -78,7 +78,7 @@ export const FormOrganization = ({
           <div className="space-y-4">
             <FormInput
               id="name"
-              label="Board name"
+              label="Board organization"
               type="text"
               errors={fieldErrors}
             />

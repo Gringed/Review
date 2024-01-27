@@ -26,7 +26,7 @@ export default async function SelectOrg() {
   return (
     <div className="flex mt-5 flex-col gap-y-5 w-full">
       {!isPro ? (
-        organizations?.length < MAX_FREE_ORG && (
+        organizations?.length < 10 && (
           <FormOrganization sideOffset={10} side="right">
             <Button>Create new organization</Button>
           </FormOrganization>
@@ -37,11 +37,11 @@ export default async function SelectOrg() {
       {organizations.map((x) => (
         <div className="flex w-full">
           <a
-            className="flex w-full pe-5 items-center gap-4 border border-primary hover:border-secondary font-semibold bg-primary-foreground text-primary  hover:bg-secondary hover:text-muted transition-all rounded-full"
+            className="flex w-full pe-5 items-center gap-4 border-2 border-secondary hover:border-secondary font-semibold bg-primary-foreground text-primary  hover:bg-secondary hover:text-muted transition-all rounded-full"
             href={`/organization/${x.id}`}
           >
-            <div className="w-[60px] h-[60px] relative">
-              <div className="rounded-full bg-secondary-foreground border-4 border-secondary w-full h-full" />
+            <div className="w-[50px] h-[50px] relative">
+              <div className="rounded-full bg-secondary-foreground border-2 border-secondary w-full h-full" />
               <div className="flex items-center justify-center absolute top-0 bottom-0 dark:text-black text-white font-semibold left-0 right-0">
                 {normalizeText(
                   x.name.substring(0, 1),
