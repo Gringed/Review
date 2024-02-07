@@ -12,9 +12,9 @@ import { CreateCard } from "./schema";
 import { InputType, ReturnType } from "./types";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
-  const { userId, orgId } = auth();
+  const { userId } = auth();
 
-  if (!userId || !orgId) {
+  if (!userId) {
     return {
       error: "Unauthorized",
     };
@@ -27,9 +27,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     const list = await db.list.findUnique({
       where: {
         id: listId,
-        board: {
-          orgId,
-        },
+
       },
     });
 

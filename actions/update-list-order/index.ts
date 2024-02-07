@@ -10,9 +10,9 @@ import { UpdateListOrder } from "./schema";
 import { InputType, ReturnType } from "./types";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
-  const { userId, orgId } = auth();
+  const { userId } = auth();
 
-  if (!userId || !orgId) {
+  if (!userId) {
     return {
       error: "Unauthorized",
     };
@@ -26,9 +26,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       db.list.update({
         where: {
           id: list.id,
-          board: {
-            orgId,
-          },
         },
         data: {
           order: list.order,

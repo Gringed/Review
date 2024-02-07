@@ -27,7 +27,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     board = await db.board.update({
       where: {
         id,
-        orgId,
       },
       data: {
         title,
