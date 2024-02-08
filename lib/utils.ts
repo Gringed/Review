@@ -19,3 +19,7 @@ export function normalizeText(sequence: any, maxChars: number, transformation = 
           return transformedText
   }
 }
+
+export function absoluteUrl(path: string) {
+  return `${process.env.NEXT_PUBLIC_APP_URL}${path}`;
+};

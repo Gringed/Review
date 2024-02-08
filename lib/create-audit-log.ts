@@ -8,18 +8,18 @@ interface Props {
   entityType: ENTITY_TYPE,
   entityTitle: string;
   action: ACTION;
+  orgId: string
 };
 
 export const createAuditLog = async (props: Props) => {
   try {
-    const { orgId } = auth();
     const user = await currentUser();
 
-    if (!user || !orgId) {
+    if (!user) {
       throw new Error("User not found!");
     }
 
-    const { entityId, entityType, entityTitle, action } = props;
+    const { entityId, entityType, entityTitle, action, orgId } = props;
 
     await db.auditLog.create({
       data: {

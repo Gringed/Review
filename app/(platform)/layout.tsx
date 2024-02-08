@@ -1,5 +1,7 @@
 "use client";
 
+import { ModalProvider } from "@/components/providers/modal-provider";
+import { QueryProvider } from "@/components/providers/query-provider";
 import { ClerkProvider, ClerkLoading, ClerkLoaded } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 
@@ -18,14 +20,17 @@ const PlatformLayout = ({ children }: { children: React.ReactNode }) => {
         },
       }}
     >
-      <Toaster />
       <ClerkLoading>
         <div className="h-screen flex justify-center items-center gap-2">
           <RotateCw className=" animate-spin" size={50} /> Loading...
         </div>
       </ClerkLoading>
       <ClerkLoaded>
-        <div>{children}</div>
+        <QueryProvider>
+          <Toaster />
+          <ModalProvider />
+          <div>{children}</div>
+        </QueryProvider>
       </ClerkLoaded>
     </ClerkProvider>
   );
