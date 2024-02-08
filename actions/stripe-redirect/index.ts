@@ -15,23 +15,23 @@ import { absoluteUrl } from "@/lib/utils";
 import { stripe } from "@/lib/stripe";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
-  const { userId, orgId } = auth();
+  const { userId } = auth();
   const user = await currentUser();
 
-  if (!userId || !orgId || !user) {
+  if (!userId || !user) {
     return {
       error: "Unauthorized",
     };
   }
 
-  const settingsUrl = absoluteUrl(`/organization/${orgId}`);
+  const settingsUrl = absoluteUrl(`/organization/${data.orgId}`);
 
   let url = "";
-
+  console.log(settingsUrl)
   try {
     const orgSubscription = await db.orgSubscription.findUnique({
       where: {
-        orgId,
+        id: data.orgId,
       }
     });
 
@@ -67,7 +67,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
           },
         ],
         metadata: {
-          orgId,
+          id: data.orgId,
         },
       });
 
@@ -79,7 +79,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     }
   };
 
-  revalidatePath(`/organization/${orgId}`);
+  revalidatePath(`/organization/${data.orgId}`);
   return { data: url };
 };
 
