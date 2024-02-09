@@ -1,15 +1,15 @@
 import { create } from "zustand";
 
 type ProModalStore = {
-  id: string;
+  id?: string;
   isOpen: boolean;
-  onOpen: () => void;
+  onOpen: (id: string) => void;
   onClose: () => void;
 };
 
 export  const useProModal = create<ProModalStore>((set) => ({
-  id: "",
+  id: undefined,
   isOpen: false,
-  onOpen: () => set({ isOpen: true }),
+  onOpen: (id: string) => set({ isOpen: true, id }),
   onClose: () => set({ isOpen: false }),
 }));

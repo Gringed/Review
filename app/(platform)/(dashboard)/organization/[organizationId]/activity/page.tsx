@@ -1,17 +1,18 @@
-import { db } from "@/lib/db";
-import { OrganizationProfile, auth, clerkClient } from "@clerk/nextjs";
-import { NextPageContext } from "next";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
-import { NextRequest } from "next/server";
-import Navbar from "../../../_components/navbar";
-import { Sidebar } from "../../../_components/sidebar";
-import { checkSubscription } from "@/lib/subscription";
-import { getAvailableCount } from "@/lib/org-limit";
+import { Suspense } from "react";
+
 import { Separator } from "@/components/ui/separator";
+
 import { Info } from "../_components/info";
 
-const SettingsPage = async ({
+import { ActivityList } from "./_components/activity-list";
+import { checkSubscription } from "@/lib/subscription";
+import Navbar from "../../../_components/navbar";
+import { Sidebar } from "../../../_components/sidebar";
+import { getAvailableCount } from "@/lib/org-limit";
+import { auth } from "@clerk/nextjs";
+import { db } from "@/lib/db";
+
+const ActivityPage = async ({
   params,
 }: {
   params: { organizationId: string };
@@ -35,7 +36,6 @@ const SettingsPage = async ({
       id: params.organizationId,
     },
   });
-
   return (
     <>
       <Navbar url={params.organizationId} />
@@ -49,9 +49,12 @@ const SettingsPage = async ({
       <div className="w-full mb-20">
         <Info isPro={isPro} url={params.organizationId} />
         <Separator className="my-7" />
+        <Suspense fallback={<ActivityList.Skeleton />}>
+          <ActivityList />
+        </Suspense>
       </div>
     </>
   );
 };
 
-export default SettingsPage;
+export default ActivityPage;

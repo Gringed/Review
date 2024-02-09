@@ -14,11 +14,13 @@ import { fetcher } from "@/lib/fetcher";
 import { useParams } from "next/navigation";
 
 export const ProModal = () => {
-  const proModal = useProModal();
+  const id = useProModal((state) => state.id);
+  const isOpen = useProModal((state) => state.isOpen);
+  const onClose = useProModal((state) => state.onClose);
   const params = useParams()
   const { data: org } = useQuery<Organization[]>({
-    queryKey: ["organization", proModal.id],
-    queryFn: () => fetcher(`/api/organization/${proModal.id}`),
+    queryKey: ["organization", id],
+    queryFn: () => fetcher(`/api/organization/${id}`),
   });
   const { execute, isLoading } = useAction(stripeRedirect, {
     onSuccess: (data) => {
@@ -28,15 +30,15 @@ export const ProModal = () => {
       toast.error(error);
     }
   });
-  console.log(params.organizationId)
+  console.log(org)
   const onClick = () => {
     execute({orgId: params.organizationId as string});
   };
   
   return (
     <Dialog
-      open={proModal.isOpen}
-      onOpenChange={proModal.onClose}
+      open={isOpen}
+      onOpenChange={onClose}
     >
       <DialogContent className="max-w-md p-0 overflow-hidden">
         <div className="aspect-video relative flex items-center justify-center">
@@ -62,6 +64,7 @@ export const ProModal = () => {
               <li>And more!</li>
             </ul>
           </div>
+          {org ? org?.map((st) => st.id) : "No response"}
           <Button
             disabled={isLoading}
             onClick={onClick}

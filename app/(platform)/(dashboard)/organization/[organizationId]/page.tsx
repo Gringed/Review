@@ -46,7 +46,7 @@ const OrganizationPage = async ({
       </div>
       <div className="w-full mb-20">
         <Info isPro={isPro} url={params.organizationId} />
-        <Separator className="my-6" />
+        <Separator className="my-7" />
         <BoardList url={params.organizationId} />
       </div>
     </>

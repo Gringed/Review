@@ -51,7 +51,7 @@ export const NavItem = ({
       label: "Activity",
       icon: <Activity className="h-4 w-4 mr-2" />,
       href: `/organization/${organization.id}/activity`,
-      disabled: true
+      disabled: false
     },
     {
       label: "Settings",
