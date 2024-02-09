@@ -30,7 +30,7 @@ import { useMobileSidebar } from "@/hooks/use-mobile-sidebar";
 interface SidebarProps {
   storageKey?: string;
   quotas: number;
-  isPro?: boolean;
+  isPro: boolean;
   organization: any;
   organizations: any;
 }
@@ -145,6 +145,7 @@ export const Sidebar = ({
           >
             {organizations.map((org: any) => (
               <NavItem
+              isPro={isPro}
                 key={org.id}
                 isActive={organization?.id === org.id}
                 isExpanded={expanded[org.id]}
@@ -191,7 +192,7 @@ export const Sidebar = ({
               maxValue={isPro ? 500 : 20}
               strokeWidth={4}
               showValueLabel={true}
-              label={"Jobs"}
+              label={"Team"}
             />
           </div>
           {isPro ? (

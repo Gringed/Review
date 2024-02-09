@@ -11,6 +11,7 @@ import { Sidebar } from "../../../_components/sidebar";
 import { getAvailableCount } from "@/lib/org-limit";
 import { auth } from "@clerk/nextjs";
 import { db } from "@/lib/db";
+import { redirect } from "next/navigation";
 
 const ActivityPage = async ({
   params,
@@ -20,7 +21,9 @@ const ActivityPage = async ({
   const isPro = await checkSubscription();
   const availableCount = await getAvailableCount(params.organizationId);
   const { userId } = auth();
-
+if(isPro === false){
+    redirect("/organization/"+params.organizationId)
+}
   if (!userId) {
     return null;
   }
@@ -41,6 +44,7 @@ const ActivityPage = async ({
       <Navbar url={params.organizationId} />
       <div className="relative">
         <Sidebar
+        isPro={isPro}
           quotas={availableCount}
           organizations={organizations}
           organization={organization}

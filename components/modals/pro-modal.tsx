@@ -12,6 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Organization } from "@prisma/client";
 import { fetcher } from "@/lib/fetcher";
 import { useParams } from "next/navigation";
+import { Separator } from "../ui/separator";
 
 export const ProModal = () => {
   const id = useProModal((state) => state.id);
@@ -41,7 +42,7 @@ export const ProModal = () => {
       onOpenChange={onClose}
     >
       <DialogContent className="max-w-md p-0 overflow-hidden">
-        <div className="aspect-video relative flex items-center justify-center">
+        <div className=" aspect-video relative ">
           <Image
             src="/hero.svg"
             alt="Hero"
@@ -59,12 +60,12 @@ export const ProModal = () => {
           <div className="pl-3">
             <ul className="text-sm list-disc">
               <li>Unlimited boards</li>
-              <li>Advanced activity</li>
+              <li>Create a team environment</li>
               <li>Admin and security features</li>
               <li>And more!</li>
             </ul>
           </div>
-          {org ? org?.map((st) => st.id) : "No response"}
+          <Separator />
           <Button
             disabled={isLoading}
             onClick={onClick}

@@ -39,6 +39,7 @@ const OrganizationPage = async ({
       <Navbar url={params.organizationId} />
       <div className="relative">
         <Sidebar
+        isPro={isPro}
           quotas={availableCount}
           organizations={organizations}
           organization={organization}

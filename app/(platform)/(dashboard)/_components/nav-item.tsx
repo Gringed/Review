@@ -4,19 +4,22 @@ import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import {
   Activity,
+  Building,
   CreditCard,
   Layout,
+  Lock,
   Settings,
 } from "lucide-react";
 
 import { cn, normalizeText } from "@/lib/utils";
-import { 
+import {
   AccordionContent,
-  AccordionItem, 
-  AccordionTrigger
+  AccordionItem,
+  AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Hint } from "@/components/hint";
 
 export type Organization = {
   id: string;
@@ -25,13 +28,15 @@ export type Organization = {
 };
 
 interface NavItemProps {
+  isPro: boolean;
   isExpanded: boolean;
   isActive: boolean;
   organization: Organization;
   onExpand: (id: string) => void;
-};
+}
 
 export const NavItem = ({
+  isPro,
   isExpanded,
   isActive,
   organization,
@@ -45,25 +50,31 @@ export const NavItem = ({
       label: "Boards",
       icon: <Layout className="h-4 w-4 mr-2" />,
       href: `/organization/${organization.id}`,
-      disabled: false
+      disabled: false,
+    },
+    {
+      label: "Team",
+      icon: <Building className="h-4 w-4 mr-2" />,
+      href: `/organization/${organization.id}/jobs`,
+      disabled: isPro ? false : true,
     },
     {
       label: "Activity",
       icon: <Activity className="h-4 w-4 mr-2" />,
       href: `/organization/${organization.id}/activity`,
-      disabled: false
+      disabled: false,
     },
     {
       label: "Settings",
       icon: <Settings className="h-4 w-4 mr-2" />,
       href: `/organization/${organization.id}/settings`,
-      disabled: false
+      disabled: false,
     },
     {
       label: "Billing",
       icon: <CreditCard className="h-4 w-4 mr-2" />,
       href: `/organization/${organization.id}/billing`,
-      disabled: true
+      disabled: false,
     },
   ];
 
@@ -72,25 +83,22 @@ export const NavItem = ({
   };
 
   return (
-    <AccordionItem
-      value={organization.id}
-      className="border-none"
-    >
+    <AccordionItem value={organization.id} className="border-none">
       <AccordionTrigger
         onClick={() => onExpand(organization.id)}
         className={cn(
           "flex items-center gap-x-2 p-1.5 text-primary rounded-md  hover:bg-neutral-500/10 transition text-start no-underline hover:no-underline",
-          isActive && !isExpanded && "bg-secondary/10 text-secondary font-semibold"
+          isActive &&
+            !isExpanded &&
+            "bg-secondary/10 text-secondary font-semibold"
         )}
       >
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 relative">
-          <div
-          className="rounded-full bg-secondary-foreground border-4 border-secondary w-full h-full"
-        />
-        <div className="flex items-center justify-center absolute top-0 bottom-0 dark:text-black text-white font-semibold left-0 right-0">
-          {normalizeText(organization.name.substring(0, 1), 1, 'uppercase')}
-        </div>
+            <div className="rounded-full bg-secondary-foreground border-4 border-secondary w-full h-full" />
+            <div className="flex items-center justify-center absolute top-0 bottom-0 dark:text-black text-white font-semibold left-0 right-0">
+              {normalizeText(organization.name.substring(0, 1), 1, "uppercase")}
+            </div>
           </div>
           <span className=" text-sm">
             {normalizeText(organization.name, 20, "none")}
@@ -101,17 +109,29 @@ export const NavItem = ({
         {routes.map((route) => (
           <Button
             key={route.href}
-            disabled={route.disabled}
             size="sm"
-            onClick={() => onClick(route.href)}
+            onClick={() => (!route.disabled ? onClick(route.href) : "")}
             className={cn(
-              "w-full font-normal justify-start pl-10 mb-1",
-              pathname === route.href && "bg-secondary/10 text-secondary font-semibold"
+              "w-full font-normal flex justify-between pl-10 mb-1",
+              pathname === route.href &&
+                "bg-secondary/10 text-secondary font-semibold"
             )}
             variant="ghost"
           >
-            {route.icon}
-            {route.label}
+            <div className="flex items-center">
+              {route.icon}
+              {route.label}
+            </div>
+            {route.disabled && (
+              <Hint
+                sideOffset={10}
+                description={`
+                Become pro reviewer
+              `}
+              >
+                <Lock className="h-4 w-4 mr-2" />
+              </Hint>
+            )}
           </Button>
         ))}
       </AccordionContent>
