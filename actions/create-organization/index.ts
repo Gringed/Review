@@ -10,10 +10,10 @@ import { InputType, ReturnType } from "./types";
 import { CreateOrganization } from "./schema";
 import { createAuditLog } from "@/lib/create-audit-log";
 import { ACTION, ENTITY_TYPE } from "@prisma/client";
-import { 
-  incrementAvailableCount, 
+import {
+  incrementAvailableCount,
   hasAvailableCount,
-  hasAvailableOrgCount
+  hasAvailableOrgCount,
 } from "@/lib/org-limit";
 import { checkSubscription } from "@/lib/subscription";
 
@@ -26,15 +26,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     };
   }
 
-  const canCreate = await hasAvailableOrgCount();
-  const isPro = await checkSubscription();
-
-  if (!canCreate && !isPro) {
-    return {
-      error: "You have reached your limit of free boards. Please upgrade to create more."
-    }
-  }
-
   const { name } = data;
 
   let organization;
@@ -44,9 +35,8 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       data: {
         name,
         admin: userId,
-      }
+      },
     });
-
 
     /* await createAuditLog({
       entityTitle: organization.name,
@@ -56,8 +46,8 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     }) */
   } catch (error) {
     return {
-      error: "Failed to create."
-    }
+      error: "Failed to create.",
+    };
   }
 
   revalidatePath(`/organization/${organization.id}`);

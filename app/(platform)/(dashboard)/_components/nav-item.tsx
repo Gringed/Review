@@ -95,7 +95,7 @@ export const NavItem = ({
       >
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 relative">
-            <div className="rounded-full bg-secondary-foreground border-4 border-secondary w-full h-full" />
+            <div className="rounded-full bg-secondary-foreground border-2 border-secondary w-full h-full" />
             <div className="flex items-center justify-center absolute top-0 bottom-0 dark:text-black text-white font-semibold left-0 right-0">
               {normalizeText(organization.name.substring(0, 1), 1, "uppercase")}
             </div>

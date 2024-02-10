@@ -137,7 +137,7 @@ export const Sidebar = ({
           </Button>
         </div>
         <Separator className="my-2" />
-        <div className="h-85 pe-2 overflow-y-scroll">
+        <div className="pe-2  overflow-y-scroll" style={{height: "57vh"}} >
           <Accordion
             type="multiple"
             defaultValue={defaultAccordionValue}

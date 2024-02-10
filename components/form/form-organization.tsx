@@ -38,13 +38,13 @@ export const FormOrganization = ({
 
   const { execute, fieldErrors } = useAction(createOrganization, {
     onSuccess: (data) => {
-      toast.success("Board created!");
+      toast.success("Organization created!");
       closeRef.current?.click();
-      router.push(`/board/${data.id}`);
+      router.push(`/organization/${data.id}`);
     },
     onError: (error) => {
       toast.error(error);
-      proModal.onOpen();
+      proModal.onOpen("");
     },
   });
 

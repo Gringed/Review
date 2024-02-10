@@ -9,6 +9,7 @@ import { getAvailableCount } from "@/lib/org-limit";
 import { auth } from "@clerk/nextjs";
 import { db } from "@/lib/db";
 import Navbar from "../../_components/navbar";
+import { Suspense } from "react";
 
 const OrganizationPage = async ({
   params,
@@ -39,7 +40,7 @@ const OrganizationPage = async ({
       <Navbar url={params.organizationId} />
       <div className="relative">
         <Sidebar
-        isPro={isPro}
+          isPro={isPro}
           quotas={availableCount}
           organizations={organizations}
           organization={organization}
@@ -48,7 +49,9 @@ const OrganizationPage = async ({
       <div className="w-full mb-20">
         <Info isPro={isPro} url={params.organizationId} />
         <Separator className="my-7" />
-        <BoardList url={params.organizationId} />
+        <Suspense fallback={<BoardList.Skeleton />}>
+          <BoardList url={params.organizationId} />
+        </Suspense>
       </div>
     </>
   );

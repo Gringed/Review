@@ -7,7 +7,7 @@ import { FormPopover } from "@/components/form/form-popover";
 
 import { redirect, useParams } from "next/navigation";
 
-import { Activity, CreditCard, Layout, Plus, Settings } from "lucide-react";
+import { Activity, Building, CreditCard, Layout, Plus, Settings } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -30,6 +30,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { checkSubscription } from "@/lib/subscription";
 
 const Navbar = async ({ url }: { url: any }) => {
   const { userId } = auth();
@@ -37,6 +38,7 @@ const Navbar = async ({ url }: { url: any }) => {
   if (!userId) {
     return null;
   }
+  const isPro = await checkSubscription()
   const organization = await db.organization.findUnique({
     where: {
       id: url,
@@ -51,30 +53,36 @@ const Navbar = async ({ url }: { url: any }) => {
     return redirect("/select-org");
   }
 
-  const routes = [
+ const routes = [
     {
       label: "Boards",
       icon: <Layout className="h-4 w-4 mr-2" />,
       href: `/organization/${organization?.id}`,
-      disabled: false
+      disabled: false,
+    },
+    {
+      label: "Team",
+      icon: <Building className="h-4 w-4 mr-2" />,
+      href: `/organization/${organization?.id}/jobs`,
+      disabled: isPro ? false : true,
     },
     {
       label: "Activity",
       icon: <Activity className="h-4 w-4 mr-2" />,
       href: `/organization/${organization?.id}/activity`,
-      disabled: true
+      disabled: false,
     },
     {
       label: "Settings",
       icon: <Settings className="h-4 w-4 mr-2" />,
       href: `/organization/${organization?.id}/settings`,
-      disabled: false
+      disabled: false,
     },
     {
       label: "Billing",
       icon: <CreditCard className="h-4 w-4 mr-2" />,
       href: `/organization/${organization?.id}/billing`,
-      disabled: true
+      disabled: false,
     },
   ];
 

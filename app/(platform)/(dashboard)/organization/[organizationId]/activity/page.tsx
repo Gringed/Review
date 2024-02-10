@@ -21,9 +21,7 @@ const ActivityPage = async ({
   const isPro = await checkSubscription();
   const availableCount = await getAvailableCount(params.organizationId);
   const { userId } = auth();
-if(isPro === false){
-    redirect("/organization/"+params.organizationId)
-}
+
   if (!userId) {
     return null;
   }
