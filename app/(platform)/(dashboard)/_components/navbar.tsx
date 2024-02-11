@@ -51,7 +51,7 @@ const Navbar = async ({ url }: { url: any }) => {
   if (!userId || !organizations.filter((x) => x.id === url).length) {
     return redirect("/select-org");
   }
-  
+  console.log("ici" + url)
   const isPro = await checkSubscription(organization?.id)
  const routes = [
     {

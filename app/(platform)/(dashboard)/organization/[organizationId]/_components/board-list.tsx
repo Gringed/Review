@@ -10,12 +10,11 @@ import { FormPopover } from "@/components/form/form-popover";
 import { MAX_FREE_BOARDS } from "@/constants/boards";
 import { getAvailableCount } from "@/lib/org-limit";
 import { checkSubscription } from "@/lib/subscription";
-import { getUrl } from 'nextjs-current-url/server';
+import { getUrl } from "nextjs-current-url/server";
 import { NextPageContext } from "next";
 
 export const BoardList = async ({ url }: { url: any }) => {
-
-  const { userId } = auth()
+  const { userId } = auth();
 
   if (!userId) {
     return redirect("/");
@@ -24,23 +23,23 @@ export const BoardList = async ({ url }: { url: any }) => {
     where: {
       admin: userId,
     },
-
   });
   if (!userId || !organizations.filter((x) => x.id === url).length) {
     return redirect("/select-org");
   }
+  const isPro = await checkSubscription(url);
 
   const boards = await db.board.findMany({
     where: {
       orgId: url,
     },
     orderBy: {
-      createdAt: "desc"
-    }
+      createdAt: "desc",
+    },
+    take: isPro ? 10000000000000 : 5,
   });
 
   const availableCount = await getAvailableCount(url);
-  const isPro = await checkSubscription(url);
 
   return (
     <div className="space-y-4">
@@ -54,7 +53,11 @@ export const BoardList = async ({ url }: { url: any }) => {
             key={board.id}
             href={`/board/${board.id}`}
             className="group relative aspect-video bg-no-repeat bg-center bg-cover rounded-sm h-full w-full overflow-hidden"
-            style={board.imageId !== "color" ? { backgroundImage: `url(${board.imageThumbUrl})` } : { background: board.imageThumbUrl }}
+            style={
+              board.imageId !== "color"
+                ? { backgroundImage: `url(${board.imageThumbUrl})` }
+                : { background: board.imageThumbUrl }
+            }
           >
             <div className="absolute inset-0 group-hover:bg-black/40 group-hover:backdrop-blur  transition-colors" />
             <p className="relative p-3 bg-muted/40 shadow font-semibold text-primary">
@@ -69,7 +72,9 @@ export const BoardList = async ({ url }: { url: any }) => {
           >
             <p className="text-sm">Create new board</p>
             <span className="text-xs">
-              {isPro ? "Unlimited" : `${MAX_FREE_BOARDS - availableCount} remaining`}
+              {isPro
+                ? "Unlimited"
+                : `${MAX_FREE_BOARDS - availableCount} remaining`}
             </span>
             <Hint
               sideOffset={40}
@@ -77,9 +82,7 @@ export const BoardList = async ({ url }: { url: any }) => {
                 Free Workspaces can have up to 5 open boards. For unlimited boards upgrade this workspace.
               `}
             >
-              <HelpCircle
-                className="absolute bottom-2 right-2 h-[14px] w-[14px]"
-              />
+              <HelpCircle className="absolute bottom-2 right-2 h-[14px] w-[14px]" />
             </Hint>
           </div>
         </FormPopover>

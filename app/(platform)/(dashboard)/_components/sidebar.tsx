@@ -2,30 +2,27 @@
 
 import Link from "next/link";
 import {
-  ArrowLeft,
-  ArrowRight,
-  ChevronLeft,
-  ChevronRight,
+  CameraIcon,
   Crown,
-  Menu,
+  InfinityIcon,
   PanelLeftOpen,
-  PanelRight,
   PanelRightOpen,
   Plus,
 } from "lucide-react";
 import { useLocalStorage } from "usehooks-ts";
-import { auth, useOrganization, useOrganizationList } from "@clerk/nextjs";
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Accordion } from "@/components/ui/accordion";
-import { CircularProgress } from "@nextui-org/react";
-import { NavItem, Organization } from "./nav-item";
-import { MobileSidebar } from "./mobile-sidebar";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { Avatar, AvatarIcon, CircularProgress } from "@nextui-org/react";
+import { NavItem } from "./nav-item";
 import { useState } from "react";
-import { useMobileSidebar } from "@/hooks/use-mobile-sidebar";
+
+import { useAction } from "@/hooks/use-action";
+import { stripeRedirect } from "@/actions/stripe-redirect";
+import { toast } from "sonner";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 interface SidebarProps {
   storageKey?: string;
@@ -33,6 +30,7 @@ interface SidebarProps {
   isPro: boolean;
   organization: any;
   organizations: any;
+  orgId: string;
 }
 
 export const Sidebar = ({
@@ -41,13 +39,30 @@ export const Sidebar = ({
   isPro,
   organization,
   organizations,
+  orgId,
 }: SidebarProps) => {
   const [expanded, setExpanded] = useLocalStorage<Record<string, any>>(
     storageKey,
     {}
   );
+  const proModal = useProModal();
   const [collapse, setCollapse] = useState<Boolean>(false);
+  const { execute, isLoading } = useAction(stripeRedirect, {
+    onSuccess: (data) => {
+      window.location.href = data;
+    },
+    onError: (error) => {
+      toast.error(error);
+    },
+  });
 
+  const onClick = () => {
+    if (isPro) {
+      execute({ orgId });
+    } else {
+      proModal.onOpen(orgId);
+    }
+  };
   const defaultAccordionValue: string[] = Object.keys(expanded).reduce(
     (acc: string[], key: string) => {
       if (expanded[key]) {
@@ -66,7 +81,7 @@ export const Sidebar = ({
     }));
   };
 
-   if (!organizations) {
+  if (!organizations) {
     return (
       <>
         <div className="flex items-center justify-between mb-2">
@@ -80,7 +95,7 @@ export const Sidebar = ({
         </div>
       </>
     );
-  } 
+  }
 
   return (
     <div className="h-full">
@@ -137,7 +152,7 @@ export const Sidebar = ({
           </Button>
         </div>
         <Separator className="my-2" />
-        <div className="pe-2  overflow-y-scroll" style={{height: "57vh"}} >
+        <div className="pe-2  overflow-y-scroll" style={{ height: "57vh" }}>
           <Accordion
             type="multiple"
             defaultValue={defaultAccordionValue}
@@ -145,7 +160,7 @@ export const Sidebar = ({
           >
             {organizations.map((org: any) => (
               <NavItem
-              isPro={isPro}
+                isPro={isPro}
                 key={org.id}
                 isActive={organization?.id === org.id}
                 isExpanded={expanded[org.id]}
@@ -168,32 +183,61 @@ export const Sidebar = ({
         <div className="flex text-primary flex-col justify-center items-center ">
           <div className="py-2 font-bold">My Organization quotas</div>
           <div className="py-2 flex gap-5">
-            <CircularProgress
-              classNames={{
-                svg: "w-16 h-16 ",
-                indicator: "stroke-secondary",
-                track: "stroke-secondary/10",
-                value: "text-sm font-semibold text-secondary",
-              }}
-              value={quotas}
-              maxValue={isPro ? 50 : 5}
-              strokeWidth={4}
-              showValueLabel={true}
-              label={"Boards"}
-            />
-            <CircularProgress
-              classNames={{
-                svg: "w-16 h-16 ",
-                indicator: "stroke-secondary",
-                track: "stroke-secondary/10",
-                value: "text-sm font-semibold text-secondary",
-              }}
-              value={6}
-              maxValue={isPro ? 500 : 20}
-              strokeWidth={4}
-              showValueLabel={true}
-              label={"Team"}
-            />
+            {isPro ? (
+              <>
+                <div className="flex flex-col justify-center gap-1 max-w-fit items-center">
+                  <Avatar
+                    icon={<InfinityIcon />}
+                    classNames={{
+                      base: "bg-gradient-to-br w-16 h-16  border-4 border-secondary",
+
+                      icon: "text-secondary",
+                    }}
+                  />
+                  <p className="text-small">Boards</p>
+                </div>
+                <div className="flex flex-col justify-center gap-1 max-w-fit items-center">
+                  <Avatar
+                    icon={<InfinityIcon />}
+                    classNames={{
+                      base: "bg-gradient-to-br w-16 h-16  border-4 border-secondary",
+
+                      icon: "text-secondary",
+                    }}
+                  />
+                  <p className="text-small">Team</p>
+                </div>
+              </>
+            ) : (
+              <>
+                <CircularProgress
+                  classNames={{
+                    svg: "w-16 h-16 ",
+                    indicator: "stroke-secondary",
+                    track: "stroke-secondary/10",
+                    value: "text-sm font-semibold text-secondary",
+                  }}
+                  value={quotas}
+                  maxValue={isPro ? 50 : 5}
+                  strokeWidth={2}
+                  showValueLabel={true}
+                  label={"Boards"}
+                />
+                <CircularProgress
+                  classNames={{
+                    svg: "w-16 h-16 ",
+                    indicator: "stroke-secondary",
+                    track: "stroke-secondary/10",
+                    value: "text-sm font-semibold text-secondary",
+                  }}
+                  value={6}
+                  maxValue={isPro ? 500 : 20}
+                  strokeWidth={2}
+                  showValueLabel={true}
+                  label={"Team"}
+                />
+              </>
+            )}
           </div>
           {isPro ? (
             <Button
@@ -205,7 +249,7 @@ export const Sidebar = ({
             </Button>
           ) : (
             <Button
-              onClick={() => console.log("On paie")}
+              onClick={onClick}
               variant={"outline"}
               className="text-primary my-2 font-bold hover:bg-secondary hover:shadow hover:from-transparent hover:text-primary-foreground"
             >

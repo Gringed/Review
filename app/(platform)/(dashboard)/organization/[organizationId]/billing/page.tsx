@@ -42,6 +42,7 @@ const BillingPage = async ({
           quotas={availableCount}
           organizations={organizations}
           organization={organization}
+          orgId={params.organizationId}
         />
       </div>
       <div className="w-full">
