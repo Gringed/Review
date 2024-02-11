@@ -11,5 +11,5 @@ export  const useProModal = create<ProModalStore>((set) => ({
   id: undefined,
   isOpen: false,
   onOpen: (id: string) => set({ isOpen: true, id }),
-  onClose: () => set({ isOpen: false }),
+  onClose: () => set({ isOpen: false, id: undefined }),
 }));

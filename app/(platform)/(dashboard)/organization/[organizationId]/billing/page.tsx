@@ -1,28 +1,26 @@
-import { FormInput } from "@/components/form/form-input";
-import { Info } from "./_components/info";
 import { checkSubscription } from "@/lib/subscription";
 import { Separator } from "@/components/ui/separator";
-import { BoardList } from "./_components/board-list";
-import { NextPageContext } from "next";
-import { Sidebar } from "../../_components/sidebar";
-import { getAvailableCount } from "@/lib/org-limit";
-import { auth } from "@clerk/nextjs";
-import { db } from "@/lib/db";
-import Navbar from "../../_components/navbar";
-import { Suspense } from "react";
 
-const OrganizationPage = async ({
+import { SubscriptionButton } from "./_components/subscription-button";
+
+import { Info } from "../_components/info";
+import { Sidebar } from "../../../_components/sidebar";
+import Navbar from "../../../_components/navbar";
+import { getAvailableCount } from "@/lib/org-limit";
+import { db } from "@/lib/db";
+import { auth } from "@clerk/nextjs";
+
+const BillingPage = async ({
   params,
 }: {
   params: { organizationId: string };
 }) => {
-  const isPro = await checkSubscription(params.organizationId);
-  const availableCount = await getAvailableCount(params.organizationId);
   const { userId } = auth();
-
   if (!userId) {
     return null;
   }
+  const isPro = await checkSubscription(params.organizationId);
+  const availableCount = await getAvailableCount(params.organizationId);
   const organizations = await db.organization.findMany({
     where: {
       admin: userId,
@@ -46,15 +44,13 @@ const OrganizationPage = async ({
           organization={organization}
         />
       </div>
-      <div className="w-full mb-20">
+      <div className="w-full">
         <Info isPro={isPro} url={params.organizationId} />
-        <Separator className="my-7" />
-        <Suspense fallback={<BoardList.Skeleton />}>
-          <BoardList url={params.organizationId} />
-        </Suspense>
+        <Separator className="my-2" />
+        <SubscriptionButton orgId={params.organizationId} isPro={isPro} />
       </div>
     </>
   );
 };
 
-export default OrganizationPage;
+export default BillingPage;

@@ -38,7 +38,6 @@ const Navbar = async ({ url }: { url: any }) => {
   if (!userId) {
     return null;
   }
-  const isPro = await checkSubscription()
   const organization = await db.organization.findUnique({
     where: {
       id: url,
@@ -52,7 +51,8 @@ const Navbar = async ({ url }: { url: any }) => {
   if (!userId || !organizations.filter((x) => x.id === url).length) {
     return redirect("/select-org");
   }
-
+  
+  const isPro = await checkSubscription(organization?.id)
  const routes = [
     {
       label: "Boards",

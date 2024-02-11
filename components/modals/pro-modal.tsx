@@ -59,7 +59,6 @@ export const ProModal = () => {
           </p>
           <div className="pl-3">
             <ul className="text-sm list-disc">
-              <li>Unlimited organizations</li>
               <li>Unlimited boards</li>
               <li>Create a team environment</li>
               <li>Admin and security features</li>

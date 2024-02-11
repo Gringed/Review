@@ -27,7 +27,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   const { title, image, orgId } = data;
 
   const canCreate = await hasAvailableCount(orgId);
-  const isPro = await checkSubscription();
+  const isPro = await checkSubscription(orgId);
 
   if (!canCreate && !isPro) {
     return {
@@ -75,6 +75,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       entityId: board.id,
       entityType: ENTITY_TYPE.BOARD,
       action: ACTION.CREATE,
+      orgId: orgId
     })
   } catch (error) {
     return {

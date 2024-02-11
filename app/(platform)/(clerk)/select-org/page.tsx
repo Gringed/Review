@@ -29,7 +29,7 @@ export default async function SelectOrg() {
         <Button>Create new organization</Button>
       </FormOrganization>
 
-      {organizations.map((x) => (
+      {organizations?.map((x) => (
         <div className="flex w-full">
           <a
             className="flex w-full pe-5 items-center gap-4 border-2 border-secondary hover:border-secondary font-semibold bg-primary-foreground text-primary  hover:bg-secondary hover:text-muted transition-all rounded-full"

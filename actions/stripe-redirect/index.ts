@@ -31,7 +31,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   try {
     const orgSubscription = await db.orgSubscription.findUnique({
       where: {
-        id: data.orgId,
+        orgId: data.orgId,
       }
     });
 
@@ -53,12 +53,12 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         line_items: [
           {
             price_data: {
-              currency: "USD",
+              currency: "EUR",
               product_data: {
                 name: "Reviewer Pro",
                 description: "Unlimited boards and more for your organization"
               },
-              unit_amount: 2000,
+              unit_amount: 700,
               recurring: {
                 interval: "month"
               },
@@ -67,7 +67,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
           },
         ],
         metadata: {
-          id: data.orgId,
+          orgId: data.orgId,
         },
       });
 

@@ -4,9 +4,7 @@ import { db } from "@/lib/db";
 
 const DAY_IN_MS = 86_400_000;
 
-export const checkSubscription = async () => {
-  const { orgId } = auth();
-
+export const checkSubscription = async (orgId?: string) => {
   if (!orgId) {
     return false;
   }
@@ -29,7 +27,7 @@ export const checkSubscription = async () => {
 
   const isValid =
     orgSubscription.stripePriceId &&
-    orgSubscription.stripeCurrentPeriodEnd?.getTime()! + DAY_IN_MS > Date.now()
+    orgSubscription.stripeCurrentPeriodEnd?.getTime()! + DAY_IN_MS > Date.now();
 
   return !!isValid;
 };
