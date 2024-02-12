@@ -18,8 +18,15 @@ export const BoardList = async ({ url }: { url: any }) => {
     return redirect("/");
   }
   const organizations = await db.organization.findMany({
+    include: {
+      users: true,
+    },
     where: {
-      admin: userId,
+      users: {
+        some: {
+          userId,
+        },
+      },
     },
   });
   const user = await db.user.findUnique({

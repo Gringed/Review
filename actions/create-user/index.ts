@@ -35,6 +35,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         email,
         username,
         userId,
+        orgId,
       },
     });
   } catch (error) {

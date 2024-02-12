@@ -41,14 +41,15 @@ model Profile {
 }
 
 model User {
-  id       String       @id @default(uuid())
-  email    String?      @unique
+  id       String        @id @default(uuid())
+  email    String?       @unique
   username String?
-  userId   String   @unique
+  userId   String        @unique
+  orgId    String       
   profile  Profile?
-  org      Organization @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org      Organization[]
 
-  @@index([userId])
+  @@index([orgId])
 }
 
 model Jobs {

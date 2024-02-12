@@ -44,8 +44,15 @@ const Navbar = async ({ url }: { url: any }) => {
     },
   });
   const organizations = await db.organization.findMany({
+    include: {
+      users: true,
+    },
     where: {
-      admin: userId,
+      users: {
+        some: {
+          userId,
+        },
+      },
     },
   });
   if (!userId || !organizations.filter((x) => x.id === url).length) {

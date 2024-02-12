@@ -23,9 +23,17 @@ const OrganizationPage = async ({
   if (!userId) {
     return null;
   }
+
   const organizations = await db.organization.findMany({
+    include: {
+      users: true,
+    },
     where: {
-      admin: userId,
+      users: {
+        some: {
+          userId,
+        },
+      },
     },
   });
 
