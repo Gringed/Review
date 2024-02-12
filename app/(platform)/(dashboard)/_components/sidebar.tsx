@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Accordion } from "@/components/ui/accordion";
-import { Avatar, AvatarIcon, CircularProgress } from "@nextui-org/react";
+import { Avatar, CircularProgress } from "@nextui-org/react";
 import { NavItem } from "./nav-item";
 import { useState } from "react";
 
@@ -31,6 +31,7 @@ interface SidebarProps {
   organization: any;
   organizations: any;
   orgId: string;
+  user?: any;
 }
 
 export const Sidebar = ({
@@ -63,6 +64,7 @@ export const Sidebar = ({
       proModal.onOpen(orgId);
     }
   };
+
   const defaultAccordionValue: string[] = Object.keys(expanded).reduce(
     (acc: string[], key: string) => {
       if (expanded[key]) {
@@ -218,7 +220,7 @@ export const Sidebar = ({
                     value: "text-sm font-semibold text-secondary",
                   }}
                   value={quotas}
-                  maxValue={isPro ? 50 : 5}
+                  maxValue={5}
                   strokeWidth={2}
                   showValueLabel={true}
                   label={"Boards"}
@@ -230,8 +232,8 @@ export const Sidebar = ({
                     track: "stroke-secondary/10",
                     value: "text-sm font-semibold text-secondary",
                   }}
-                  value={6}
-                  maxValue={isPro ? 500 : 20}
+                  value={1}
+                  maxValue={1}
                   strokeWidth={2}
                   showValueLabel={true}
                   label={"Team"}

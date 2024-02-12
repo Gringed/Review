@@ -7,9 +7,8 @@ import { db } from "@/lib/db";
 import { createSafeAction } from "@/lib/create-safe-action";
 
 import { InputType, ReturnType } from "./types";
-import { CreateOrganization } from "./schema";
-import { createAuditLog } from "@/lib/create-audit-log";
-import { ACTION, ENTITY_TYPE } from "@prisma/client";
+import { CreateUser } from "./schema";
+
 import {
   incrementAvailableCount,
   hasAvailableCount,
@@ -26,24 +25,17 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     };
   }
 
-  const { name } = data;
+  const { email, username, orgId } = data;
 
-  let organization;
+  let user;
 
   try {
-    organization = await db.organization.create({
+    user = await db.user.create({
       data: {
-        name,
-        admin: userId,
+        email,
+        username,
+        userId,
       },
-    });
-
-    await createAuditLog({
-      entityTitle: organization.name,
-      entityId: organization.id,
-      entityType: ENTITY_TYPE.BOARD,
-      action: ACTION.CREATE,
-      orgId: organization.id,
     });
   } catch (error) {
     return {
@@ -51,8 +43,8 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     };
   }
 
-  revalidatePath(`/organization/${organization.id}`);
-  return { data: organization };
+  revalidatePath(`/organization/${orgId}`);
+  return { data: user };
 };
 
-export const createOrganization = createSafeAction(CreateOrganization, handler);
+export const createUser = createSafeAction(CreateUser, handler);

@@ -9,26 +9,26 @@ generator client {
 }
 
 model Board {
-  id            String   @id @default(uuid())
+  id            String @id @default(uuid())
   orgId         String
   userId        String
   title         String
   imageId       String
-  imageThumbUrl String   @db.Text
-  imageFullUrl  String   @db.Text
-  imageUserName String   @db.Text
-  imageLinkHTML String   @db.Text
+  imageThumbUrl String @db.Text
+  imageFullUrl  String @db.Text
+  imageUserName String @db.Text
+  imageLinkHTML String @db.Text
 
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  List          List[]
-
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  List      List[]
 }
 
 model Organization {
-  id      String @id @default(uuid())
-  name    String
-  admin   String
+  id    String @id @default(uuid())
+  name  String
+  admin String
+  users User[]
 }
 
 model Profile {
@@ -41,11 +41,14 @@ model Profile {
 }
 
 model User {
-  id            String       @id @default(uuid())
-  email         String?       @unique
-  username          String?
-  userId        String
-  profile       Profile?
+  id       String       @id @default(uuid())
+  email    String?      @unique
+  username String?
+  userId   String   @unique
+  profile  Profile?
+  org      Organization @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model Jobs {

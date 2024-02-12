@@ -10,8 +10,6 @@ import { FormPopover } from "@/components/form/form-popover";
 import { MAX_FREE_BOARDS } from "@/constants/boards";
 import { getAvailableCount } from "@/lib/org-limit";
 import { checkSubscription } from "@/lib/subscription";
-import { getUrl } from "nextjs-current-url/server";
-import { NextPageContext } from "next";
 
 export const BoardList = async ({ url }: { url: any }) => {
   const { userId } = auth();
@@ -24,6 +22,12 @@ export const BoardList = async ({ url }: { url: any }) => {
       admin: userId,
     },
   });
+  const user = await db.user.findUnique({
+    where: {
+      userId
+    }
+  })
+
   if (!userId || !organizations.filter((x) => x.id === url).length) {
     return redirect("/select-org");
   }
@@ -51,8 +55,9 @@ export const BoardList = async ({ url }: { url: any }) => {
         {boards.map((board) => (
           <Link
             key={board.id}
+            aria-disabled={!user}
             href={`/board/${board.id}`}
-            className="group relative aspect-video bg-no-repeat bg-center bg-cover rounded-sm h-full w-full overflow-hidden"
+            className={`${!user && "pointer-events-none filter grayscale"} group relative aspect-video bg-no-repeat bg-center bg-cover rounded-sm h-full w-full overflow-hidden`}
             style={
               board.imageId !== "color"
                 ? { backgroundImage: `url(${board.imageThumbUrl})` }
