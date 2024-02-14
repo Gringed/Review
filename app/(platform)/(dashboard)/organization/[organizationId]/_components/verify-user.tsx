@@ -9,7 +9,7 @@ const VerifyUser = ({user}: any) => {
   if (!params) {
     return null;
   }
-  console.log(user);
+
   useEffect(() => {
     if (!user) {
       userModal.onOpen(params.organizationId);

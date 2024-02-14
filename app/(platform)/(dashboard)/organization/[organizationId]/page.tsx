@@ -36,8 +36,6 @@ const OrganizationPage = async ({
       },
     },
   });
-
-  console.log(params.organizationId);
   const organization = await db.organization.findUnique({
     where: {
       id: params.organizationId,

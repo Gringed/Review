@@ -20,6 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Hint } from "@/components/hint";
+import { useAuth } from "@clerk/nextjs";
 
 export type Organization = {
   id: string;
@@ -44,7 +45,7 @@ export const NavItem = ({
 }: NavItemProps) => {
   const router = useRouter();
   const pathname = usePathname();
-
+  const {userId} = useAuth()
   const routes = [
     {
       label: "Boards",
@@ -96,13 +97,22 @@ export const NavItem = ({
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 relative">
             <div className="rounded-full bg-secondary-foreground border-2 border-secondary w-full h-full" />
-            <div className="flex items-center justify-center absolute top-0 bottom-0 dark:text-black text-white font-semibold left-0 right-0">
+            <div className="flex items-center justify-center absolute top-0 bottom-0 text-sm dark:text-black text-white font-medium left-0 right-0">
               {normalizeText(organization.name.substring(0, 1), 1, "uppercase")}
             </div>
           </div>
           <span className=" text-sm">
             {normalizeText(organization.name, 20, "none")}
           </span>
+          {userId === organization.admin ? (
+              <span className="inline-flex items-center rounded-full bg-red-50 px-2 py-1 text-xs font-normal text-red-700 ring-1 ring-inset ring-red-600/10">
+                Owner
+              </span>
+            ) : (
+              <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-normal text-green-700 ring-1 ring-inset ring-green-600/20">
+                Guest
+              </span>
+            )}
         </div>
       </AccordionTrigger>
       <AccordionContent className="pt-1 text-primary">

@@ -37,7 +37,6 @@ export const FormPopover = ({
   const router = useRouter();
   const closeRef = useRef<ElementRef<"button">>(null);
   const params = useParams()
-  console.log(params)
   const { execute, fieldErrors } = useAction(createBoard, {
     onSuccess: (data) => {
       toast.success("Board created!");
@@ -46,7 +45,7 @@ export const FormPopover = ({
     },
     onError: (error) => {
       toast.error(error);
-      proModal.onOpen();
+      proModal.onOpen(params?.organizationId as any);
     },
   });
 

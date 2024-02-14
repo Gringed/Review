@@ -12,7 +12,7 @@ import { createAuditLog } from "@/lib/create-audit-log";
 import { ACTION, ENTITY_TYPE } from "@prisma/client";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
-  const { userId, orgId } = auth();
+  const { userId } = auth();
 
   if (!userId) {
     return {
@@ -38,6 +38,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       entityId: board.id,
       entityType: ENTITY_TYPE.BOARD,
       action: ACTION.UPDATE,
+      orgId: board.orgId
     })
   } catch (error) {
     return {

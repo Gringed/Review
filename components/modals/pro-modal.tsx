@@ -31,7 +31,6 @@ export const ProModal = () => {
       toast.error(error);
     }
   });
-  console.log(org)
   const onClick = () => {
     execute({orgId: params.organizationId as string});
   };

@@ -78,7 +78,7 @@ export const ListHeader = ({
   useEventListener("keydown", onKeyDown);
 
   return (
-    <div className="pt-2 px-2 text-sm font-semibold flex justify-between items-start- gap-x-2">
+    <div className="pt-2 px-2 text-sm font-semibold text-primary flex justify-between items-start- gap-x-2">
       {isEditing ? (
         <form 
           ref={formRef}
@@ -93,7 +93,7 @@ export const ListHeader = ({
             id="title"
             placeholder="Enter list title.."
             defaultValue={title}
-            className="text-sm px-[7px] py-1 h-7 font-medium border-transparent hover:border-input focus:border-input transition truncate bg-transparent focus:bg-white"
+            className="text-sm px-[7px] py-1 h-7 font-medium border-transparent hover:border-input focus:border-input transition truncate text-primary bg-transparent focus:bg-white"
           />
           <button type="submit" hidden />
         </form>

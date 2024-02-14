@@ -31,7 +31,6 @@ export async function POST(req: Request) {
     if (!session?.metadata?.orgId) {
       return new NextResponse("Org ID is required", { status: 400 });
     }
-    console.log("Ici l'erreur numéro 1")
     await db.orgSubscription.create({
       data: {
         orgId: session?.metadata?.orgId,
@@ -49,7 +48,6 @@ export async function POST(req: Request) {
     const subscription = await stripe.subscriptions.retrieve(
       session.subscription as string
     );
-        console.log(subscription)
     await db.orgSubscription.update({
       where: {
         stripeSubscriptionId: subscription.id,

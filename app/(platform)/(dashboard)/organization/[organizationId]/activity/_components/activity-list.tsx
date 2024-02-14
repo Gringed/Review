@@ -7,24 +7,16 @@ import { NextRequest } from "next/server";
 import { headers } from "next/headers";
 import { LoaderIcon } from "lucide-react";
 
-export const ActivityList = async () => {
-  const headersList = headers();
-  const referer = headersList.get("referer");
-
-  if (!referer) {
-    return redirect("/");
-  }
-  const request = new NextRequest(referer);
-
+export const ActivityList = async ({ url }: any) => {
   const auditLogs = await db.auditLog.findMany({
     where: {
-      orgId: request.nextUrl.pathname.split("/")[2],
+      orgId: url,
     },
     orderBy: {
       createdAt: "desc",
     },
   });
-  await new Promise((resolve) => setTimeout(resolve, 700));
+  await new Promise((resolve) => setTimeout(resolve, 200));
   return (
     <ol className="space-y-4 mt-4">
       {auditLogs && (

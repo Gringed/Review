@@ -7,7 +7,16 @@ import { FormPopover } from "@/components/form/form-popover";
 
 import { redirect, useParams } from "next/navigation";
 
-import { Activity, Building, CreditCard, Layout, Plus, Settings } from "lucide-react";
+import {
+  Activity,
+  Bell,
+  BellIcon,
+  Building,
+  CreditCard,
+  Layout,
+  Plus,
+  Settings,
+} from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -31,6 +40,8 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { checkSubscription } from "@/lib/subscription";
+import { Badge } from "@nextui-org/react";
+import { UpdatesModal } from "@/components/modals/updates-modal";
 
 const Navbar = async ({ url }: { url: any }) => {
   const { userId } = auth();
@@ -58,9 +69,9 @@ const Navbar = async ({ url }: { url: any }) => {
   if (!userId || !organizations.filter((x) => x.id === url).length) {
     return redirect("/select-org");
   }
-  console.log("ici" + url)
-  const isPro = await checkSubscription(organization?.id)
- const routes = [
+
+  const isPro = await checkSubscription(organization?.id);
+  const routes = [
     {
       label: "Boards",
       icon: <Layout className="h-4 w-4 mr-2" />,
@@ -92,7 +103,7 @@ const Navbar = async ({ url }: { url: any }) => {
       disabled: false,
     },
   ];
-
+  const onClick = () => {};
   return (
     <nav className="fixed z-50 top-0 px-4 w-full text-primary bg-background h-14 border-b shadow-sm  flex items-center">
       <div className="flex items-center gap-x-4">
@@ -119,17 +130,23 @@ const Navbar = async ({ url }: { url: any }) => {
         </FormPopover>
       </div>
       <div className="ml-auto flex items-center gap-x-2">
+        <UpdatesModal />
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuTrigger>{organization?.name}</NavigationMenuTrigger>
+              <NavigationMenuTrigger>
+                {organization?.name}
+              </NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="flex flex-col w-full gap-3 p-4  ">
                   {routes.map((component) => (
                     <div className="flex">
-                      <Link className={`flex items-center gap-2 active:bg-slate-100 ${component.disabled && "pointer-events-none opacity-40"}`}
-                      tabIndex={component.disabled ? -1 : undefined}
-                      aria-disabled={component.disabled}
+                      <Link
+                        className={`flex items-center gap-2 active:bg-slate-100 ${
+                          component.disabled && "pointer-events-none opacity-40"
+                        }`}
+                        tabIndex={component.disabled ? -1 : undefined}
+                        aria-disabled={component.disabled}
                         key={component.label}
                         title={component.label}
                         href={component.href}

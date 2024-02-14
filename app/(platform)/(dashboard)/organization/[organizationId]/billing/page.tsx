@@ -22,12 +22,17 @@ const BillingPage = async ({
   const isPro = await checkSubscription(params.organizationId);
   const availableCount = await getAvailableCount(params.organizationId);
   const organizations = await db.organization.findMany({
+    include: {
+      users: true,
+    },
     where: {
-      admin: userId,
+      users: {
+        some: {
+          userId,
+        },
+      },
     },
   });
-
-  console.log(params.organizationId);
   const organization = await db.organization.findUnique({
     where: {
       id: params.organizationId,

@@ -27,7 +27,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   const settingsUrl = absoluteUrl(`/organization/${data.orgId}`);
 
   let url = "";
-  console.log(settingsUrl)
+
   try {
     const orgSubscription = await db.orgSubscription.findUnique({
       where: {

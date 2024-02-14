@@ -26,12 +26,19 @@ const ActivityPage = async ({
     return null;
   }
   const organizations = await db.organization.findMany({
+    include: {
+      users: true,
+    },
     where: {
-      admin: userId,
+      users: {
+        some: {
+          userId,
+        },
+      },
     },
   });
 
-  console.log(params.organizationId);
+
   const organization = await db.organization.findUnique({
     where: {
       id: params.organizationId,
@@ -53,7 +60,7 @@ const ActivityPage = async ({
         <Info isPro={isPro} url={params.organizationId} />
         <Separator className="my-7" />
         <Suspense fallback={<ActivityList.Skeleton />}>
-          <ActivityList />
+          <ActivityList url={params.organizationId} />
         </Suspense>
       </div>
     </>

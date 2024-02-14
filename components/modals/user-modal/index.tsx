@@ -31,14 +31,12 @@ export const UserModal = () => {
     onSuccess: (data) => {
       toast.success(`User "${data.username}" created`);
       formRef.current?.reset();
-      onClose()
+      onClose();
     },
     onError: (error) => {
       toast.error(error);
     },
   });
-
-  console.log(clerkUser);
 
   const onSubmit = (formData: FormData) => {
     const username = formData.get("username") as string;
@@ -82,7 +80,9 @@ export const UserModal = () => {
               />
               <Separator />
               <div className="flex items-center justify-center gap-x-1">
-                <FormSubmit className="rounded-full" variant="default">Create user</FormSubmit>
+                <FormSubmit className="rounded-full" variant="default">
+                  Create user
+                </FormSubmit>
               </div>
             </form>
           </div>
