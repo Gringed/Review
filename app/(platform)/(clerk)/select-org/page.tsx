@@ -36,7 +36,7 @@ export default async function SelectOrg() {
       </FormOrganization>
 
       {organizations?.map((x) => (
-        <div className="flex w-full">
+        <div className="flex w-full" key={x.id}>
           <a
             className="flex w-full pe-5  justify-between items-center gap-4 border-2 border-secondary hover:border-secondary font-semibold bg-primary-foreground text-primary  hover:bg-secondary hover:text-muted transition-all rounded-full"
             href={`/organization/${x.id}`}
