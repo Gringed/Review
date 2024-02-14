@@ -1,8 +1,10 @@
 
 import React from "react";
-import VerifyUser from "./[organizationId]/_components/verify-user";
+
 import { auth } from "@clerk/nextjs";
 import { db } from "@/lib/db";
+import VerifyUser from "./[organizationId]/_components/verify-user";
+
 
 const OrganizationLayout = async ({ children }: { children: React.ReactNode }) => {
   const {userId} = auth()
