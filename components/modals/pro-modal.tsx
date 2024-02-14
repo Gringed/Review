@@ -57,6 +57,7 @@ export const ProModal = () => {
               <li>Unlimited boards</li>
               <li>Create a team environment</li>
               <li>Unlimited Team members</li>
+              <li>All calendar features</li>
               <li>And more!</li>
             </ul>
           </div>

@@ -16,7 +16,6 @@ export const ActivityList = async ({ url }: any) => {
       createdAt: "desc",
     },
   });
-  await new Promise((resolve) => setTimeout(resolve, 200));
   return (
     <ol className="space-y-4 mt-4">
       {auditLogs && (
