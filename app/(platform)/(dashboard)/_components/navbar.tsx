@@ -140,7 +140,7 @@ const Navbar = async ({ url }: { url: any }) => {
               <NavigationMenuContent>
                 <ul className="flex flex-col w-full gap-3 p-4  ">
                   {routes.map((component) => (
-                    <div className="flex">
+                    <div className="flex" key={component.label}>
                       <Link
                         className={`flex items-center gap-2 active:bg-slate-100 ${
                           component.disabled && "pointer-events-none opacity-40"

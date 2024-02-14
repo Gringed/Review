@@ -29,7 +29,7 @@ const MarketingPage = () => {
       </div>
       <div className="flex flex-col text-center font-semibold max-w-xs md:max-w-2xl  text-sm mx-auto  md:text-xl">
         <span>Keep everything in the same place-even if your</span>
-        <span>team isn't</span>
+        <span>{"team isn't"}</span>
       </div>
       <div>
         <Button
